@@ -1,4 +1,5 @@
 void setup() {
+//setLightweightServoPulseMicrosFor0And180Degree(544, 2400); // раскомментировать, углы поворода серво, если серво упирается в ноль или не доезжает
   write9(0);
   strip.clear();
   strip.show();
