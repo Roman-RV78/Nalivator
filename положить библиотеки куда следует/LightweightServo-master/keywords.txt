@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map Servo
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LeightweightServo	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+initLightweightServoPin9And10	KEYWORD2
+initLightweightServoPin9_10	KEYWORD2
+setLightweightServoPulseMicrosFor0And180Degree	KEYWORD2
+setLightweightServoPulse	KEYWORD2
+setLightweightServoPulsePin9	KEYWORD2
+setLightweightServoPulsePin10	KEYWORD2
+getMicrosFromDegree	KEYWORD2
+getDegreeFromMicros	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
