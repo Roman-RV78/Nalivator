@@ -197,6 +197,7 @@ void encTick() {
         promivka = true;
         systemON = true;
         flag = true;
+        randFlag = 0;
       } else if (MenuFlag != 0 && MenuFlag <= 5) { //Выход в главное меню
         oled_menu();
         if (MenuFlag == 3) { // если были в меню плеера , то обновляем громкость плеера
@@ -249,7 +250,11 @@ void encTick() {
         count = -1;
         servoPos = 0;
         do {
-          servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+          servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+          servo_move(0);                                     // цель серво - 0
+#endif
         } while (moving);
         menu_servo();
         address = 0;
@@ -303,7 +308,11 @@ void encTick() {
       } else if (MenuFlag == 20) {  // выход из меню настройки помпы в меню настроек
         MenuFlag = 4;
         do {
-          servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+          servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+          servo_move(0);                                     // цель серво - 0
+#endif
         } while (moving);
         menu_nastr();
         address = 60;
@@ -346,7 +355,11 @@ void encTick() {
         play_track(4); //  трек в папке mp3,
 
         do {
-          servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+          servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+          servo_move(0);                                     // цель серво - 0
+#endif
         } while (moving);
         delay(3000);
         returnMenu = true;
@@ -478,7 +491,11 @@ void encTick() {
 
       } else if (MenuFlag == 11 ) { // меню настройки промывка
         do {
-          servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+          servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+          servo_move(0);                                     // цель серво - 0
+#endif
         } while (moving);
         menu_nastr();
         MenuFlag = 4;
@@ -500,12 +517,17 @@ void encTick() {
         } while (moving);
 
         do {
-          servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+          servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+          servo_move(0);                                     // цель серво - 0
+#endif
         } while (moving);
 
       } else if (MenuFlag == 20) {  // наливаем в рюмку для проверки величины налива, после изменения времени налива
         Drink = 50;
         systemON = true;
+        randFlag = 0;
         kalibr_pump(1);
       }
 

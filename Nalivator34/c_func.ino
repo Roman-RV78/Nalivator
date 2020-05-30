@@ -80,7 +80,11 @@ void flowRoutnie() {
       }
     }
     if (noGlass) {                                         // если не нашли ни одной рюмки
-      servo_move(0);                                        // цель серво - 0
+#ifdef STARTING_POS_SERVO_GLASS1
+      servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+      servo_move(0);                                     // цель серво - 0
+#endif
       if (!moving) {                                    // едем до упора
         PAUSEtimer.setInterval(4000);
         PAUSEtimer.reset();
@@ -197,7 +201,11 @@ void flowRoutnie() {
           menu_promivka(2);
         } else {
           do {
-            servo_move(0);
+#ifdef STARTING_POS_SERVO_GLASS1
+            servo_move(shotPos[0]);                             // цель серво - первая рюмка
+#else
+            servo_move(0);                                     // цель серво - 0
+#endif
           } while (moving);
           returnMenu = true;
         }
@@ -212,7 +220,11 @@ void flowRoutnie() {
 
 void servo_move(uint8_t target) {
   static uint32_t prevServoTime = 0;
+#ifdef STARTING_POS_SERVO_GLASS1
+  static uint8_t pos = shotPos[0];
+#else
   static uint8_t pos = 0;
+#endif
   static bool deadTime = false;
   if (!moving) {
     if (pos != target) {

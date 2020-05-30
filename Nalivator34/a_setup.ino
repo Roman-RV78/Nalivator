@@ -1,6 +1,5 @@
 void setup() {
-//setLightweightServoPulseMicrosFor0And180Degree(544, 2400); // раскомментировать, углы поворода серво, если серво упирается в ноль или не доезжает
-  write9(0);
+  //setLightweightServoPulseMicrosFor0And180Degree(544, 2400); // раскомментировать, углы поворода серво, если серво упирается в ноль или не доезжает
   strip.clear();
   strip.show();
 #ifdef LED_TOWER
@@ -112,4 +111,9 @@ void setup() {
 
   oled_menu();
   mix();
+#ifdef STARTING_POS_SERVO_GLASS1
+  write9(shotPos[0]);
+#else
+  write9(0);
+#endif
 }
