@@ -13,9 +13,9 @@ void flowTick() {
         //DEBUG(i);
         if (!systemON && !save)play_track(i + 20); //  трек в папке mp3, с 20 по 25
         yesGlass++;
+        SAVEtimer.reset();
         if (save) {
           play_track(17);
-          SAVEtimer.reset();
           save = false;
           enc.rst();
           lcd.backlight();
