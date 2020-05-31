@@ -24,6 +24,7 @@ void flowTick() {
         if (barMan && (MenuFlag == 1 || MenuFlag == 2) && systemState != PUMPING) {
           oled_naliv();
           systemON = true;
+          randFlag = 0;
         }
       }
       if (shotStates[i] != NO_GLASS && !swState) {   // убрали пустую/полную рюмку
@@ -55,7 +56,7 @@ void flowRoutnie() {
     if (!moving) {
       noGlass = true;
       for (uint8_t i = randFlag; i < NUM_SHOTS; i++) {
-        if (MenuFlag == 6 || noDoliv) randFlag++;
+        if ((MenuFlag == 6 || noDoliv) && !barMan) randFlag++;
         if (shotStates[i] == EMPTY && i != curPumping ) {    // поиск рюмки
           if (MenuFlag == 6) {
             if (subMush == 1 && i == randomGlass) noGlass = false;                           // один за всех

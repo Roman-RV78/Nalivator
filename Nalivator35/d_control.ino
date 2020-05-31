@@ -467,6 +467,7 @@ void encTick() {
         MenuFlag = 5;
         mushket();
       } else if (Menu == 4 && MenuFlag == 5) { // вошли в меню мушкетёры
+        barMan = false;
         MenuFlag = 6;
         oled_auto();
       } else if (MenuFlag == 6  ) { // начинаем розлив мушкетёров
