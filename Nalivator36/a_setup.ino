@@ -108,7 +108,7 @@ void setup() {
 #ifdef LED_TOWER
   strip2.setBrightness(bright);
 #endif
-
+  delay(2000);
   oled_menu();
   mix();
 #ifdef STARTING_POS_SERVO_GLASS1
