@@ -452,14 +452,15 @@ void play_mushket() {
     }
     if (countRand != 0) {
       playMush = true;
-      if (ledShowOn) {
-        ledShow = true;
-#ifdef LED_TOWER
-        TOWERtimer.setInterval(20);
-        rainbow = true;
-#endif
-      }
+
       if (volume != 0 ) {
+        if (ledShowOn) {
+          ledShow = true;
+#ifdef LED_TOWER
+          TOWERtimer.setInterval(20);
+          rainbow = true;
+#endif
+        }
         if (player) {
           playOn = true;
           player = false;
