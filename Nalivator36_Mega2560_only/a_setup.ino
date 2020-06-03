@@ -1,5 +1,4 @@
 void setup() {
-  //setLightweightServoPulseMicrosFor0And180Degree(544, 2400); // раскомментировать, углы поворода серво, если серво упирается в ноль или не доезжает
   strip.clear();
   strip.show();
 #ifdef LED_TOWER
@@ -13,7 +12,6 @@ void setup() {
 #ifdef BAT_MONITOR_ON
   analogReference(INTERNAL1V1);
 #endif
-  //mySerial.begin (9600);
   Serial3.begin(9600);
 
   // настройка пинов
