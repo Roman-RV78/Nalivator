@@ -246,6 +246,7 @@ void servo_move(uint8_t target) {
     if (pos != target) {
       moving = true;
       deadTime = false;
+      servo.attach(SERVO_PIN);
       prevServoTime = millis();
     }
   }
@@ -253,7 +254,7 @@ void servo_move(uint8_t target) {
     prevServoTime = millis();
     if (pos > target) pos--;
     else if (pos < target) pos++;
-    write9(pos);
+    servo.write(pos);
     if ( pos == target ) {
       deadTime = true;
       prevServoTime = millis();
@@ -263,6 +264,7 @@ void servo_move(uint8_t target) {
   if (deadTime && millis() - prevServoTime >= POST_PAUSE) { // пауза после остановки сервы до включения помпы
     deadTime = false;
     moving = false;
+    servo.detach();
   }
 }
 
