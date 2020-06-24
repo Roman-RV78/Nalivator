@@ -71,7 +71,7 @@ void flowRoutnie() {
               }
             } else if (subMush == 2) {
               if (i == rumka[randomGlass]) {
-                randomGlass++;
+                if (randomGlass < NUM_SHOTS - 1)randomGlass++;
                 noGlass = false;                          // все за одного
               }
             }
