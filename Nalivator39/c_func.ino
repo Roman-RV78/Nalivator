@@ -15,7 +15,7 @@ void flowTick() {
         yesGlass++;
         SAVEtimer.reset();
         if (save) {
-          play_track(17);
+          play_track(17); // звук просыпания 
           save = false;
           enc.rst();
           lcd.backlight();

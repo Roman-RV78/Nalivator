@@ -17,7 +17,12 @@ void setup() {
 
   // настройка пинов
   pinMode(PUMP_POWER, OUTPUT);
+#if (PUMP_LEVEL == 0)
+  digitalWrite(PUMP_POWER, HIGH);
+#else
   digitalWrite(PUMP_POWER, LOW);
+#endif
+
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
 #if(SWITCH_LEVEL == 0)
     pinMode(SW_pins[i], INPUT_PULLUP);

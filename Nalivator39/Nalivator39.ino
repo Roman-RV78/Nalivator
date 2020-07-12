@@ -8,6 +8,7 @@
 #define MAX_DRINK 50  // максимальный объём тары мл, для корректного отображения в менюшках экрана, ставить не более 95
 #define MEMORY_ON // включение запись параметров в память, закомментировано - значит выключено! 
 #define SWITCH_LEVEL 1    // концевики 1 - высокий сигнал при замыкании, 0 - низкий
+#define PUMP_LEVEL 1    // уровень включения помпы, 1 - высокий уровень, 0 - низкий
 //#define STARTING_POS_SERVO_GLASS1 // раскомментировать, если нужна начальная позиция серво в первой рюмке
 #define BAT_MONITOR_ON // включение в коде всё что звязано с АКБ, закомментировать если нет АКБ вообще.
   #ifdef BAT_MONITOR_ON
@@ -160,9 +161,13 @@ uint8_t power[8] = {B01010, B01010, B11111, B11111, B11111, B01110, B00100, B001
 
 
 // =========== МАКРО ===========
-#define pumpON() digitalWrite(PUMP_POWER, 1)
-#define pumpOFF() digitalWrite(PUMP_POWER, 0)
-
+#if (PUMP_LEVEL == 0)
+  #define pumpON() digitalWrite(PUMP_POWER, 0)
+  #define pumpOFF() digitalWrite(PUMP_POWER, 1)
+#else
+   #define pumpON() digitalWrite(PUMP_POWER, 1)
+   #define pumpOFF() digitalWrite(PUMP_POWER, 0)
+#endif
 
 #if (DEBUG_UART == 1)
 #define DEBUG(x) Serial.println(x)
