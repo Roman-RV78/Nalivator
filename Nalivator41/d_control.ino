@@ -110,10 +110,10 @@ void encTick() {
         } else if (folTra == 2) {
           menu_play(4);
         } else if (folTra == 3) {
-          volume2 = constrain(volume2, 0, 30);
           if (++mixMusic > 1 ) mixMusic = 0;
           menu_play(5);
         } else if (folTra == 4) {
+          volume2 = constrain(volume2, 0, 30);
           myMP3.volume(volume2);
           menu_play(2);
         }

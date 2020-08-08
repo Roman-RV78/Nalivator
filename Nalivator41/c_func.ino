@@ -11,7 +11,7 @@ void flowTick() {
         LEDchanged = true;
         //DEBUG("set glass");
         //DEBUG(i);
-        if (!systemON && !save)play_track(i + 20); //  трек в папке mp3, с 20 по 25
+        if (!systemON && !save && !playMush)play_track(i + 20); //  трек в папке mp3, с 20 по 25
         yesGlass++;
         SAVEtimer.reset();
         if (save) {
@@ -417,7 +417,6 @@ void play_next() {
     pause = false;
     oldNum = num2;
     if (num2 <= tracks2 - 1) {
-      //myMP3.playFolder(folder2, num2);
       myMP3.playFolder(folder2, (MusicList[num2] + 1));
       if (!player) {
         player = true;
