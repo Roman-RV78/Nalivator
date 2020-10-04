@@ -11,7 +11,7 @@
 #define PUMP_LEVEL 1    // уровень включения помпы, 1 - высокий уровень, 0 - низкий
 #define SOUND_THEME 0    // звуковая тема, 0 - по умолчанию, 1 - для танкистов
 //#define STARTING_POS_SERVO_GLASS1 // раскомментировать, если нужна начальная позиция серво в первой рюмке
-//#define SERVO_CHANGE_DIRECTION // раскомментировать, отзеркалить движение серво, при этом нужно зеркалить подключение концевиков и позиции LED диодов рюмок!
+//#define SERVO_CHANGE_DIRECTION // раскомментировать, отзеркалить движение серво
   #ifdef SERVO_CHANGE_DIRECTION 
      #define INITAL_ANGLE_SERVO 180 // начальный угол на который становится серво, если включен режим зеркало, подбирать в меньшую сторону, если упирается серво.
   #endif
@@ -44,7 +44,11 @@
 #if  defined(__AVR_ATmega328P__)
   #include <SoftwareSerial.h> // если подключаем плеер  не к железному сериал, обязательно!
   SoftwareSerial mySerial(10, 11); // RX, TX   плейер подключаем к D10 и  D11
+#ifndef SERVO_CHANGE_DIRECTION
   const uint8_t SW_pins[] = {A0, A1, A2, A3, 7, 8};  //  пины концевиков для arduino nano
+#else
+  const uint8_t SW_pins[] = {8, 7, A3, A2, A1, A0};  //  пины концевиков для arduino nano
+#endif 
   #define SERVO_PIN   9 // пин серво для arduino nano. Можно только 9, 10 пины!!!!!!!!
   #define PUMP_POWER 13 // помпа для arduino nano
   #define LED_PIN 6  // пин ленты для arduino nano
@@ -65,7 +69,11 @@
 //               =========== ПИНЫ ARDUINO MEGA ===========
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
   #define SERVO_PIN   2 // пин серво для arduino mega. Можно только 2, 3, 5, 6, 7, 8, 11, 12, 13, 44, 45, 46 пины!!!!!!!!
+#ifndef SERVO_CHANGE_DIRECTION
   const uint8_t SW_pins[] = {A0, A1, A2, A3, A7, A8};  //  пины концевиков для arduino mega
+#else
+  const uint8_t SW_pins[] = {A8, A7, A3, A2, A1, A0};  //  пины концевиков для arduino mega
+#endif
   #define PUMP_POWER 12 // помпа для arduino mega
   #define LED_PIN 5  // пин ленты для arduino mega
  #ifdef BAT_MONITOR_ON

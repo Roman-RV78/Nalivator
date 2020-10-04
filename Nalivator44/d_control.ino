@@ -363,7 +363,6 @@ void encTick() {
         check = true;
         pumpOFF();                // помпу выкл
         moving = false;
-        //barMan = 0;
         if (ledShowOn) {
           ledShow = false;
 #ifdef LED_TOWER

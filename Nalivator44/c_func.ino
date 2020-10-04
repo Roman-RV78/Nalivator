@@ -6,8 +6,12 @@ void flowTick() {
     for (uint8_t i = 0; i < NUM_SHOTS; i++) {
       bool swState = !digitalRead(SW_pins[i]) ^ SWITCH_LEVEL;
       if (shotStates[i] == NO_GLASS && swState && readySystem) { // поставили пустую рюмку
-        shotStates[i] = EMPTY;                                      // флаг на заправку
+        shotStates[i] = EMPTY; // флаг на заправку
+#ifndef SERVO_CHANGE_DIRECTION
         strip.setLED(i, mRGB(255, 0, 0));  // подсветили красный
+#else
+        strip.setLED(NUM_SHOTS - 1 - i, mRGB(255, 0, 0));  // подсветили красный
+#endif
         LEDchanged = true;
         //DEBUG("set glass");
         //DEBUG(i);
@@ -45,7 +49,11 @@ void flowTick() {
       if (shotStates[i] != NO_GLASS && !swState) {   // убрали пустую/полную рюмку
         shotStates[i] = NO_GLASS;                    // статус - нет рюмки
         if (!ledShow) {
+#ifndef SERVO_CHANGE_DIRECTION
           strip.setLED(i, mRGB(0, 0, 0));  // чёрный
+#else
+          strip.setLED(NUM_SHOTS - 1 - i, mRGB(0, 0, 0));  // чёрный
+#endif
           LEDchanged = true;
         }
         if (i == curPumping ) { // убрали во время заправки!
@@ -234,7 +242,11 @@ void flowRoutnie() {
     if (readyDrink) {  // если налили
       pumpOFF();                                          // помпа выкл
       shotStates[curPumping] = READY;                     // налитая рюмка, статус: готов
+#ifndef SERVO_CHANGE_DIRECTION
       strip.setLED(curPumping, mRGB(0, 255, 0));             // подсветили
+#else
+      strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(0, 255, 0));             // подсветили
+#endif
       strip.show();
       curPumping = -1;                                    // снимаем выбор рюмки
       systemState = WAIT;                                 // режим работы - ждать
@@ -275,17 +287,17 @@ void servo_move(uint8_t target) {
   target = 180 - target;
 #endif
 #ifdef STARTING_POS_SERVO_GLASS1
-    #ifdef SERVO_CHANGE_DIRECTION
-      static uint8_t pos = INITAL_ANGLE_SERVO - shotPos[0];
-    #else
-      static uint8_t pos = shotPos[0];
-    #endif
-#else 
-    #ifdef SERVO_CHANGE_DIRECTION
-      static uint8_t pos = INITAL_ANGLE_SERVO;
-    #else
-      static uint8_t pos = 0;
-    #endif
+#ifdef SERVO_CHANGE_DIRECTION
+  static uint8_t pos = INITAL_ANGLE_SERVO - shotPos[0];
+#else
+  static uint8_t pos = shotPos[0];
+#endif
+#else
+#ifdef SERVO_CHANGE_DIRECTION
+  static uint8_t pos = INITAL_ANGLE_SERVO;
+#else
+  static uint8_t pos = 0;
+#endif
 #endif
   static bool deadTime = false;
   if (!moving) {

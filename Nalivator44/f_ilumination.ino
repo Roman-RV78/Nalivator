@@ -12,14 +12,22 @@ void CvetoMuzik() {
     if (systemState == PUMPING) {
       if (++count > 3) {
         count = 0;
+#ifndef SERVO_CHANGE_DIRECTION
         strip.setLED(curPumping, mWHEEL(col));           // зажгли цвет
+#else
+        strip.setLED(NUM_SHOTS - 1 - curPumping, mWHEEL(col));           // зажгли цвет
+#endif
         strip.show();
         col += 450;
         if (col > 1350) col = 0;
 
       }
     } else {
+#ifndef SERVO_CHANGE_DIRECTION
       strip.setLED(led , mWHEEL(col));
+#else
+      strip.setLED(NUM_SHOTS - 1 - led , mWHEEL(col));
+#endif
       strip.show();
       if (++led >= NUM_SHOTS) {
         led = 0;
@@ -39,9 +47,15 @@ void CvetoMuzik() {
 
   if (check) { // проверка рюмок
     for (led = 0; led < NUM_SHOTS; led++) {
+#ifndef SERVO_CHANGE_DIRECTION
       if (shotStates[led] == READY) strip.setLED(led, mRGB(0, 255, 0));                    // налитая рюмка, статус: готов
       else if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(255, 0, 0));
       else if (shotStates[led] == NO_GLASS) strip.setLED(led, mRGB(0, 0, 0));
+#else
+      if (shotStates[led] == READY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 255, 0));                    // налитая рюмка, статус: готов
+      else if (shotStates[led] == EMPTY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(255, 0, 0));
+      else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 0, 0));
+#endif
     }
     LEDtimer.reset();
     LEDchanged = true;
