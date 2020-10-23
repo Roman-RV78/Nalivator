@@ -432,7 +432,8 @@ byte microLED::correctBright() {
 void microLED::show() {
 	*ws2812_port_reg |= pinMask; // Enable DDR
 	//WS2812B_sendData((PTR_TYPE)LEDbuffer, (int16_t)COLOR_DEBTH * _numLEDs, pinMask, (uint8_t*) ws2812_port, (uint8_t*) ws2812_port_reg, correctBright());
-	WS2812B_sendData((PTR_TYPE)LEDbuffer, (int16_t)COLOR_DEBTH * _numLEDs, pinMask, (uint8_t*) ws2812_port, (uint8_t*) ws2812_port_reg, _bright);
+	//WS2812B_sendData((PTR_TYPE)LEDbuffer, (int16_t)COLOR_DEBTH * _numLEDs, pinMask, (uint8_t*) ws2812_port, (uint8_t*) ws2812_port_reg, _bright);
+	WS2812B_sendData((PTR_TYPE)LEDbuffer, (int16_t)COLOR_DEBTH * _numLEDs, pinMask, (uint8_t*) ws2812_port, _bright);
 }
 
 // ================== COLOR UTILITY ===================
@@ -470,7 +471,7 @@ LEDdata mHSV(byte h, byte s, byte v) {
 	return mRGB(r, g, b);
 #else
 	// обычный HSV
-	float r, g, b;
+	static float r, g, b;
 	
 	float H = (float)h / 255;
 	float S = (float)s / 255;
@@ -499,7 +500,7 @@ LEDdata mHSV(byte h, byte s, byte v) {
 //}
 
 LEDdata mWHEEL(int color) {
-	byte _r, _g, _b;
+	static byte _r, _g, _b;
 	if (color <= 255) {           // красный макс, зелёный растёт
 		_r = 255;
 		_g = color;

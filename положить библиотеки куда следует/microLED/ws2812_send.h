@@ -44,7 +44,8 @@
 #endif
 
 
-void WS2812B_sendData (PTR_TYPE data, int16_t datlen, uint8_t maskhi, uint8_t *port, uint8_t *portreg, uint8_t bright) {
+//void WS2812B_sendData (PTR_TYPE data, int16_t datlen, uint8_t maskhi, uint8_t *port, uint8_t *portreg, uint8_t bright) {
+	void WS2812B_sendData (PTR_TYPE data, int16_t datlen, uint8_t maskhi, uint8_t *port, uint8_t bright) {
 	uint8_t ctr,masklo;
 	uint8_t loopData[3];
 	uint8_t *data_ptr = loopData;	
