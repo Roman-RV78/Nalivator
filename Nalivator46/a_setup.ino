@@ -93,7 +93,7 @@ void setup() {
   oldFolder = folder;
 
   address = 90;
-  EEPROM.get(address, noDoliv); // считываем из памяти флаг перемешивания тостов
+  EEPROM.get(address, noDoliv); // считываем из памяти флаг долива
   if ( noDoliv > 1) noDoliv = 1;
 
   address = 100;

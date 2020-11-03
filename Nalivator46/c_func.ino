@@ -7,7 +7,7 @@ void flowTick() {
       bool swState = !digitalRead(SW_pins[i]) ^ SWITCH_LEVEL;
       if (shotStates[i] == NO_GLASS && swState && readySystem) { // поставили пустую рюмку
         shotStates[i] = EMPTY; // флаг на заправку
-#ifndef SERVO_CHANGE_DIRECTION
+#ifndef LED_CHANGE_DIRECTION
         strip.setLED(i, mRGB(255, 0, 0));  // подсветили красный
 #else
         strip.setLED(NUM_SHOTS - 1 - i, mRGB(255, 0, 0));  // подсветили красный
@@ -49,7 +49,7 @@ void flowTick() {
       if (shotStates[i] != NO_GLASS && !swState) {   // убрали пустую/полную рюмку
         shotStates[i] = NO_GLASS;                    // статус - нет рюмки
         if (!ledShow) {
-#ifndef SERVO_CHANGE_DIRECTION
+#ifndef LED_CHANGE_DIRECTION
           strip.setLED(i, mRGB(0, 0, 0));  // чёрный
 #else
           strip.setLED(NUM_SHOTS - 1 - i, mRGB(0, 0, 0));  // чёрный
@@ -243,7 +243,7 @@ void flowRoutnie() {
       if (readyDrink) {  // если налили
         pumpOFF();                                          // помпа выкл
         shotStates[curPumping] = READY;                     // налитая рюмка, статус: готов
-#ifndef SERVO_CHANGE_DIRECTION
+#ifndef LED_CHANGE_DIRECTION
         strip.setLED(curPumping, mRGB(0, 255, 0));             // подсветили
 #else
         strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(0, 255, 0));             // подсветили
