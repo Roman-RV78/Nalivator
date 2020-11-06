@@ -72,7 +72,7 @@ void setup() {
 
   address = 40;
   EEPROM.get(address, speedSer); // считываем из памяти скорость сервы
-  if (speedSer < 5 || speedSer > 30) speedSer = 10;
+  if (speedSer < 2 || speedSer > 30) speedSer = 10;
 
   address = 50;
   EEPROM.get(address, sleepTime); // считываем из памяти время таймера сна

@@ -129,7 +129,6 @@ void encTick() {
           break;
 
       }
-      //enc.rst();
       drift = 0;
     }
 
