@@ -192,7 +192,7 @@ void encTick() {
         menu_nastr();
 #ifdef MEMORY_ON
         address = 10;
-        for (uint8_t i = 0; i < 6; i++) {
+        for (uint8_t i = 0; i < NUM_SHOTS; i++) {
           EEPROM.update(address, ManDrink[i]); // обновляем в памяти, дриньки для мультиразлива
           address++;
           delay(5);
@@ -239,7 +239,7 @@ void encTick() {
         menu_servo();
 #ifdef MEMORY_ON
         address = 0;
-        for (uint8_t i = 0; i < 6; i++) {
+        for (uint8_t i = 0; i < NUM_SHOTS; i++) {
           EEPROM.update(address, shotPos[i]); // обновляем в памяти положение для сервы
           address++;
           delay(5);

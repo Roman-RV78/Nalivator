@@ -51,9 +51,25 @@
   #include <SoftwareSerial.h> // подключаем плеер  не к железному сериал, обязательно!
   SoftwareSerial mySerial(10, 11); // RX, TX   плейер подключаем к D10 и  D11
 #ifndef PIN_CHANGE_DIRECTION
-  const uint8_t SW_pins[] = {A0, A1, A2, A3, 7, 8};  //  пины концевиков для arduino nano
+   #if (NUM_SHOTS == 6)
+     const uint8_t SW_pins[] = {A0, A1, A2, A3, 7, 8};  //  пины концевиков для arduino nano, 6 стопок
+   #elif (NUM_SHOTS == 5)
+     const uint8_t SW_pins[] = {A0, A1, A2, A3, 7};  //  пины концевиков для arduino nano, 5 стопок
+   #elif (NUM_SHOTS == 4)
+     const uint8_t SW_pins[] = {A0, A1, A2, A3};  //  пины концевиков для arduino nano, 4 стопки
+   #else
+    #error "ВЫБРАНО МАЛОЕ КОЛИЧЕСТВО РЮМОК!!!"  
+   #endif
 #else
-  const uint8_t SW_pins[] = {8, 7, A3, A2, A1, A0};  //  пины концевиков для arduino nano, зеркально
+  #if (NUM_SHOTS == 6)
+   const uint8_t SW_pins[] = {8, 7, A3, A2, A1, A0};  //  пины концевиков для arduino nano, зеркально, 6 стопок
+  #elif (NUM_SHOTS == 5)
+   const uint8_t SW_pins[] = {7, A3, A2, A1, A0};  //  пины концевиков для arduino nano, зеркально, 5 стопок
+  #elif (NUM_SHOTS == 4)
+   const uint8_t SW_pins[] = {A3, A2, A1, A0};  //  пины концевиков для arduino nano, зеркально, 4 стопки
+  #else
+    #error "ВЫБРАНО МАЛОЕ КОЛИЧЕСТВО РЮМОК!!!"
+  #endif
 #endif 
   #define SERVO_PIN   9 // пин серво для arduino nano. Можно только 9, 10 пины!!!!!!!!
   #define PUMP_POWER 13 // помпа для arduino nano
@@ -76,9 +92,25 @@
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
   #define SERVO_PIN   2 // пин серво для arduino mega. Можно только 2, 3, 5, 6, 7, 8, 11, 12, 13, 44, 45, 46 пины!!!!!!!!
 #ifndef PIN_CHANGE_DIRECTION
-  const uint8_t SW_pins[] = {A0, A1, A2, A3, A7, A8};  //  пины концевиков для arduino mega
+  #if (NUM_SHOTS == 6)
+   const uint8_t SW_pins[] = {A0, A1, A2, A3, A7, A8};  //  пины концевиков для arduino mega, 6 стопок
+  #elif (NUM_SHOTS == 5)
+   const uint8_t SW_pins[] = {A0, A1, A2, A3, A7};  //  пины концевиков для arduino mega, 5 стопок
+  #elif (NUM_SHOTS == 4)
+  const uint8_t SW_pins[] = {A0, A1, A2, A3};  //  пины концевиков для arduino mega, 4 стопки
+  #else
+    #error "ВЫБРАНО МАЛОЕ КОЛИЧЕСТВО РЮМОК!!!" 
+  #endif
 #else
-  const uint8_t SW_pins[] = {A8, A7, A3, A2, A1, A0};  //  пины концевиков для arduino mega, зеркально
+  #if (NUM_SHOTS == 6)
+  const uint8_t SW_pins[] = {A8, A7, A3, A2, A1, A0};  //  пины концевиков для arduino mega, зеркально, , 6 стопок
+  #elif (NUM_SHOTS == 5)
+  const uint8_t SW_pins[] = {A7, A3, A2, A1, A0};  //  пины концевиков для arduino mega, зеркально, 5 стопок
+  #elif (NUM_SHOTS == 4)
+  const uint8_t SW_pins[] = {A3, A2, A1, A0};  //  пины концевиков для arduino mega, зеркально, 4 стопки
+  #else
+    #error "ВЫБРАНО МАЛОЕ КОЛИЧЕСТВО РЮМОК!!!"
+  #endif
 #endif
   #define PUMP_POWER 12 // помпа для arduino mega
   #define LED_PIN 5  // пин ленты для arduino mega

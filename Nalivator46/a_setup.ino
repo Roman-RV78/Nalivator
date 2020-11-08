@@ -48,16 +48,15 @@ void setup() {
   pinMode(BUT_TOWER_PIN, INPUT);
 #endif
 
-  Procent = 5; // используем переменную счётчика, потом приведём её в нужное значение, она учавствует в другом месте.
-  for (uint8_t i = 0; i < 6; i++) {
+  for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, shotPos[i]); // считываем из памяти положение для сервы
     if ( shotPos[i] < 1 ||  shotPos[i] > 180) shotPos[i] = Procent;  // если ячейки памяти не в интервале, то ставим начальные значения
     address++;
-    Procent += 35;
+    Procent += 180 / (NUM_SHOTS - 1);
   }
 
   address = 10;
-  for (uint8_t i = 0; i < 6; i++) {
+  for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, ManDrink[i]); // считываем из памяти, дриньки для мультиразлива
     if ( ManDrink[i] < 20 ||  ManDrink[i] > MAX_DRINK) ManDrink[i] = 20; // если ячейки памяти не в интервале, то ставим начальные значения
     address++;
