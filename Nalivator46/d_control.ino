@@ -117,8 +117,13 @@ void encTick() {
           break;
 
         case 41: // меню настройки позиции серво над рюмками
-          move_enc(&servoPos, drift, 0, 180, false);
+#ifdef SERVO_CHANGE_DIRECTION
+          move_enc(&servoPos, drift, 1, INITAL_ANGLE_SERVO, false);
+          servo.write(INITAL_ANGLE_SERVO - servoPos);
+#else
+          move_enc(&servoPos, drift, 1, 180, false);
           servo.write(servoPos);
+#endif
           servo_calibr(2);
           shotPos[count] = servoPos;
           break;

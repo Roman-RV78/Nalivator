@@ -47,12 +47,12 @@ void setup() {
 #ifdef BUTTON_TOWER
   pinMode(BUT_TOWER_PIN, INPUT);
 #endif
-
+  Procent = 1;
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, shotPos[i]); // считываем из памяти положение для сервы
     if ( shotPos[i] < 1 ||  shotPos[i] > 180) shotPos[i] = Procent;  // если ячейки памяти не в интервале, то ставим начальные значения
     address++;
-    Procent += 180 / (NUM_SHOTS - 1);
+    Procent += (180 / (NUM_SHOTS - 1)) - 1;
   }
 
   address = 10;
