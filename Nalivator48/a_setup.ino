@@ -58,7 +58,7 @@ void setup() {
   address = 10;
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, ManDrink[i]); // считываем из памяти, дриньки для мультиразлива
-    if ( ManDrink[i] < 20 ||  ManDrink[i] > MAX_DRINK) ManDrink[i] = 20; // если ячейки памяти не в интервале, то ставим начальные значения
+    if ( ManDrink[i] < MIN_DRINK ||  ManDrink[i] > MAX_DRINK) ManDrink[i] = 20; // если ячейки памяти не в интервале, то ставим начальные значения
     address++;
   }
   address = 20;

@@ -16,7 +16,7 @@ void encTick() {
 
         case 1:  // меню автоналива
         case 6:  // меню налива мушкетёров
-          move_enc(&Drink, drift * 5, 20, MAX_DRINK, false);
+          move_enc(&Drink, drift * 5, MIN_DRINK, MAX_DRINK, false);
           oled_auto();
           break;
 
@@ -61,7 +61,7 @@ void encTick() {
           break;
 
         case 12: // меню настройки дриньков мультиразлива
-          move_enc(&ManDrink[(ManRum - 1)], drift * 5, 20, MAX_DRINK, false);
+          move_enc(&ManDrink[(ManRum - 1)], drift * 5, MIN_DRINK, MAX_DRINK, false);
           multi_naliv2();
           break;
 
