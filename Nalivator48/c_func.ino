@@ -8,9 +8,9 @@ void flowTick() {
       if (shotStates[i] == NO_GLASS && swState && readySystem) { // поставили пустую рюмку
         shotStates[i] = EMPTY; // флаг на заправку
 #ifndef LED_CHANGE_DIRECTION
-        strip.setLED(i, mRGB(255, 0, 0));  // подсветили красный
+        strip.setLED(i, mRGB(COLOR_EMPTY_GLASS));  // подсветили 
 #else
-        strip.setLED(NUM_SHOTS - 1 - i, mRGB(255, 0, 0));  // подсветили красный
+        strip.setLED(NUM_SHOTS - 1 - i, mRGB(COLOR_EMPTY_GLASS));  // подсветили 
 #endif
         LEDchanged = true;
         //DEBUG("set glass");
@@ -244,9 +244,9 @@ void flowRoutnie() {
         pumpOFF();                                          // помпа выкл
         shotStates[curPumping] = READY;                     // налитая рюмка, статус: готов
 #ifndef LED_CHANGE_DIRECTION
-        strip.setLED(curPumping, mRGB(0, 255, 0));             // подсветили
+        strip.setLED(curPumping, mRGB(COLOR_POURET_GLASS));             // подсветили
 #else
-        strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(0, 255, 0));             // подсветили
+        strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(COLOR_POURET_GLASS));             // подсветили
 #endif
         strip.show();
         curPumping = -1;                                    // снимаем выбор рюмки

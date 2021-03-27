@@ -48,12 +48,12 @@ void CvetoMuzik() {
   if (check) { // проверка рюмок
     for (led = 0; led < NUM_SHOTS; led++) {
 #ifndef LED_CHANGE_DIRECTION
-      if (shotStates[led] == READY) strip.setLED(led, mRGB(0, 255, 0));                    // налитая рюмка, статус: готов
-      else if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(255, 0, 0));
+      if (shotStates[led] == READY) strip.setLED(led, mRGB(COLOR_POURET_GLASS));                    // налитая рюмка, статус: готов
+      else if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(COLOR_EMPTY_GLASS));
       else if (shotStates[led] == NO_GLASS) strip.setLED(led, mRGB(0, 0, 0));
 #else
-      if (shotStates[led] == READY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 255, 0));                    // налитая рюмка, статус: готов
-      else if (shotStates[led] == EMPTY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(255, 0, 0));
+      if (shotStates[led] == READY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_POURET_GLASS));                    // налитая рюмка, статус: готов
+      else if (shotStates[led] == EMPTY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_GLASS));
       else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 0, 0));
 #endif
     }
