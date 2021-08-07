@@ -58,7 +58,7 @@ void setup() {
   address = 10;
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, ManDrink[i]); // считываем из памяти, дриньки для мультиразлива
-    if ( ManDrink[i] < 20 ||  ManDrink[i] > MAX_DRINK) ManDrink[i] = 20; // если ячейки памяти не в интервале, то ставим начальные значения
+    if ( ManDrink[i] < MIN_DRINK ||  ManDrink[i] > MAX_DRINK) ManDrink[i] = 20; // если ячейки памяти не в интервале, то ставим начальные значения
     address++;
   }
   address = 20;
@@ -106,6 +106,10 @@ void setup() {
   address = 120;
   EEPROM.get(address, barMan); // считываем из памяти флаг режима бармен
   if ( barMan > 1) barMan = 1;
+
+  address = 130;
+  EEPROM.get(address, noTostBarmen); // считываем из памяти флаг режима бармен
+  if ( noTostBarmen > 1) noTostBarmen = 1;
 
   Procent = 0;
 

@@ -8,9 +8,9 @@ void flowTick() {
       if (shotStates[i] == NO_GLASS && swState && readySystem) { // поставили пустую рюмку
         shotStates[i] = EMPTY; // флаг на заправку
 #ifndef LED_CHANGE_DIRECTION
-        strip.setLED(i, mRGB(255, 0, 0));  // подсветили красный
+        strip.setLED(i, mRGB(COLOR_EMPTY_GLASS));  // подсветили
 #else
-        strip.setLED(NUM_SHOTS - 1 - i, mRGB(255, 0, 0));  // подсветили красный
+        strip.setLED(NUM_SHOTS - 1 - i, mRGB(COLOR_EMPTY_GLASS));  // подсветили
 #endif
         LEDchanged = true;
         //DEBUG("set glass");
@@ -136,18 +136,22 @@ void flowRoutnie() {
         servo_move(0);                                     // цель серво - 0
 #endif
         if (!moving) {                                    // едем до упора
-          PAUSEtimer.setInterval(4000);
-          PAUSEtimer.reset();
           if (DrinkCount > 0 && !promivka && MenuFlag != 20) {
-            oled_nalito();                                 // Выводим на экран налито ...
-            tost = true;
-            if (player && volume != 0 && tracks != -1 ) {
-              playOn = true;
-              player = false;
-              myMP3.stop();
-            } else if (!player && volume != 0 ) {
-              myMP3.stop();
+            if ( noTostBarmen == 0 || barMan == 0) {
+              PAUSEtimer.setInterval(4000);
+              oled_nalito(); // Выводим на экран налито ...
+              tost = true;
+              if (player && volume != 0 && tracks != -1 ) {
+                playOn = true;
+                player = false;
+                myMP3.stop();
+              }
+            } else {
+              PAUSEtimer.setInterval(100);
+              returnMenu = true;
             }
+            if (!player && volume != 0 ) myMP3.stop();
+
             if (ledShowOn) {
               ledShow = true;
 #ifdef LED_TOWER
@@ -158,6 +162,7 @@ void flowRoutnie() {
 #endif
             }
           } else {
+            PAUSEtimer.setInterval(4000);
             lcd.clear();
             if (yesGlass == 0 || promivka || MenuFlag == 20) {
               lcd.setCursor(3, 1);
@@ -187,7 +192,7 @@ void flowRoutnie() {
           muveBack = true;
 #endif
           //DEBUG("no glass");
-
+          PAUSEtimer.reset();
         }
       }
       break;
@@ -244,9 +249,9 @@ void flowRoutnie() {
         pumpOFF();                                          // помпа выкл
         shotStates[curPumping] = READY;                     // налитая рюмка, статус: готов
 #ifndef LED_CHANGE_DIRECTION
-        strip.setLED(curPumping, mRGB(0, 255, 0));             // подсветили
+        strip.setLED(curPumping, mRGB(COLOR_POURET_GLASS));             // подсветили
 #else
-        strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(0, 255, 0));             // подсветили
+        strip.setLED(NUM_SHOTS - 1 - curPumping, mRGB(COLOR_POURET_GLASS));             // подсветили
 #endif
         strip.show();
         curPumping = -1;                                    // снимаем выбор рюмки

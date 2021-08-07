@@ -1,7 +1,7 @@
 void CvetoMuzik() {
   static uint8_t led = 0;
   static uint8_t count = 0;
-  static int16_t col = 0;
+  static uint8_t counter = 0;
 #ifdef LED_TOWER
   static bool flag = false;
   static uint8_t count2 = 0;
@@ -10,35 +10,28 @@ void CvetoMuzik() {
 #endif
   if ( (MenuFlag == 15 || ledShow || systemState == PUMPING ) &&  LEDtimer.isReady()) {
     if (systemState == PUMPING) {
-      if (++count > 3) {
-        count = 0;
 #ifndef LED_CHANGE_DIRECTION
-        strip.setLED(curPumping, mWHEEL(col));           // зажгли цвет
+      strip.setLED(curPumping, mHSV(counter, 255, 255));           // радуга при наливе рюмки
 #else
-        strip.setLED(NUM_SHOTS - 1 - curPumping, mWHEEL(col));           // зажгли цвет
+      strip.setLED(NUM_SHOTS - 1 - curPumping, mHSV(counter, 255, 255));           // радуга при наливе рюмки
 #endif
-        strip.show();
-        col += 450;
-        if (col > 1350) col = 0;
-
-      }
+      counter += INTENSITY_COLOR_CHANGE_GLASS; // можно поменять , интенсивность смены цвета при розливе на рюмке
+      strip.show();
     } else {
 #ifndef LED_CHANGE_DIRECTION
-      strip.setLED(led , mWHEEL(col));
+      leds[led] = mHSV((uint8_t)(counter + led * TABLE_RAINBOW_STEP) , 255, 255); //  умножение  led  увеличивает шаг радуги стола, можно поиграться значением
 #else
-      strip.setLED(NUM_SHOTS - 1 - led , mWHEEL(col));
+      leds[NUM_SHOTS - 1 - led] = mHSV((uint8_t)(counter + (NUM_SHOTS - 1 - led) * TABLE_RAINBOW_STEP) , 255, 255); //  умножение  led  увеличивает шаг радуги стола, можно поиграться значением
 #endif
+      counter += 5;
       strip.show();
+
       if (++led >= NUM_SHOTS) {
         led = 0;
-        col += 450;
-        if (col > 1350) {
-          col = 0;
-          if (++count == 6) {  // колличество проходов иллюминации после налива
-            count = 0;
-            if (MenuFlag != 15 && !playMush) check = true; // если не в меню настроек, то проверяем рюмки
+        if (++count == NUMBER_ILLUMINATION_PASSES) {  // колличество проходов иллюминации после налива
+          count = 0;
+          if (MenuFlag != 15 && !playMush) check = true; // если не в меню настроек, то проверяем рюмки
 
-          }
         }
       }
     }
@@ -62,8 +55,8 @@ void CvetoMuzik() {
     check = false;
     ledShow = false;
     led = 0;
-    col = 0;
     count = 0;
+    counter = 0;
   }
   // отрисовка светодиодов по флагу
   if (!ledShow && LEDchanged && LEDtimer.isReady()) {
@@ -96,8 +89,8 @@ void CvetoMuzik() {
 
 
   if ((MenuFlag == 15 || rainbow ) && !clearLed && TOWERtimer.isReady()) {
-    leds2[count2] = mHSV((uint8_t)(count3 + count2 * (255 / NUMLEDS)), 255, 255); //
-    count3 += 4;
+    leds2[count2] = mHSV((uint8_t)(count3 + count2 * 50 ), 255, 255); //  умножение  count2  увеличивает шаг радуги башни, можно поиграться значением
+    count3 += 5;
     strip2.show();
     if (++count2 >= NUMLEDS ) {
       count2 = 0;

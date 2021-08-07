@@ -4,176 +4,159 @@ void encTick() {
   if (!returnMenu || promivka) enc.tick();
 
   if ( !save && !systemON && !tost && !playMush) {
-    if (enc.isLeft()) {
-      if (MenuFlag == 0) {
-        if (Menu-- == 0 )  Menu = 4; // Перемещение  по главному меню назад
-      } else if (MenuFlag == 1 || MenuFlag == 6) {
-        Drink -= 5;
-      } else if (MenuFlag == 3) {
-        if (folTra == 1) (folder2 <= 10 ) ? folder2 = 18 : folder2--; //  минусуем номер папки  .
-        else if (folTra == 2) (num2 <= 1) ? num2 = tracks2 : num2--;
-        else if (folTra == 3) volume2--;
-
-      } else if (MenuFlag == 4) {
-#ifdef BAT_MONITOR_ON
-        if (--subNastr < 1 )  subNastr = 9; // Перемещение  по меню настроек назад.
-#else
-        if (--subNastr < 1 )  subNastr = 8; // Перемещение  по меню настроек назад.
-#endif
-      } else if (MenuFlag == 5) {
-        if (--subMush < 1 ) subMush = 2; // Перемещение  по мушкетёрам
-      } else if (MenuFlag == 12) {
-        ManDrink[(ManRum - 1)] -= 5;
-      } else if (MenuFlag == 31) {
-        volume--;
-      } else if (MenuFlag == 41) {
-        servoPos--;
-      } else if (MenuFlag == 15) {
-        bright -= 5;
-      } else if (MenuFlag == 42) {
-        speedSer++;
-      } else if (MenuFlag == 19) {
-        sleepTime--;
-      } else if (MenuFlag == 20) {
-        time50ml -= 50;
-      } else if (MenuFlag == 30) {
-        if (--subMenu < 1 )  subMenu = 3; // Перемещение  по меню тостов настроек назад.
-      } else if (MenuFlag == 40) {
-        if (--subMenu < 1 )  subMenu = 2; // Перемещение  по меню серво настроек назад.
-      } else if (MenuFlag == 33) {
-        if (--folder < 1 )  folder = 9; //  Перемещение  по меню папок настроек назад.
-      }
-
-    }
-
-    if ( enc.isRight()) {
-      if (MenuFlag == 0) {
-        if (Menu++ == 4 )  Menu = 0; // Перемещение  по главному меню вперед.
-      } else if (MenuFlag == 1 || MenuFlag == 6) {
-        Drink += 5;
-      } else if (MenuFlag == 3) {
-        if (folTra == 1) (folder2 >= 18 ) ? folder2 = 10 : folder2++; // плюсуем номер папки от 10 до 18
-        else if (folTra == 2) (num2 >= tracks2) ? num2 = 1 : num2++;  // плюсуем номер трека
-        else if (folTra == 3) volume2++;
-
-      } else if (MenuFlag == 4) {
-#ifdef BAT_MONITOR_ON
-        if (++subNastr > 9 )  subNastr = 1; // Перемещение  по меню настроек вперед.
-#else
-        if (++subNastr > 8 )  subNastr = 1; // Перемещение  по меню настроек вперед.
-#endif
-      } else if (MenuFlag == 5) {
-        if (++subMush > 2 )  subMush = 1; // Перемещение  по мушкетёрам
-      } else if (MenuFlag == 12) {
-        ManDrink[(ManRum - 1)] += 5;
-      } else if (MenuFlag == 31) {
-        volume++;
-      } else if (MenuFlag == 41) {
-        servoPos++;
-      } else if (MenuFlag == 15) {
-        bright += 5;
-      } else if (MenuFlag == 42) {
-        speedSer--;
-      } else if (MenuFlag == 19) {
-        sleepTime++;
-      } else if (MenuFlag == 20) {
-        time50ml += 50;
-      } else if (MenuFlag == 30) {
-        if (++subMenu > 3 )  subMenu = 1; // Перемещение  по меню тостов настроек вперед.
-      } else if (MenuFlag == 40) {
-        if (++subMenu > 2 )  subMenu = 1; // Перемещение  по меню серво настроек вперед.
-      } else if (MenuFlag == 33) {
-        if (++folder > 9 )  folder = 1; // Перемещение  по меню папок настроек вперед.
-      }
-    }
-
-
     if (enc.isTurn()) { // если произошло движение энкодера в любую сторону
       SAVEtimer.reset();
-      if (MenuFlag == 0) {
-        oled_menu();
-      } else if (MenuFlag == 1 || MenuFlag == 6) {
-        Drink = constrain(Drink, 20, MAX_DRINK);
-        oled_auto();
-      } else if (MenuFlag == 3) {
-        if (folTra == 1 ) {
-          if (player) {
-            player = false;
-            myMP3.stop();
-            menu_play(0);
-            delay(100);
+      if (enc.isLeft()) drift--;
+      if (enc.isRight()) drift++;
+      switch (MenuFlag) {
+        case 0:    // главное меню
+          move_enc(&Menu, drift, 0, 4, true); // Перемещение  по главному меню
+          oled_menu();
+          break;
+
+        case 1:  // меню автоналива
+        case 6:  // меню налива мушкетёров
+          move_enc(&Drink, drift * 5, MIN_DRINK, MAX_DRINK, false);
+          oled_auto();
+          break;
+
+        case 3:  // меню плеера
+          if (folTra == 1 ) {
+            move_enc(&folder2, drift, 10, 18, false);
+            if (player) {
+              player = false;
+              myMP3.stop();
+              menu_play(0);
+              delay(100);
+            }
+            tracks2 = myMP3.numTracksInFolder(folder2);
+            if (tracks2 > 100) tracks2 = 100;
+            num2 = 0;
+            menu_play(1);
+          } else if (folTra == 2) {
+            move_enc(&num2, drift, 0, tracks2, false);
+            menu_play(4);
+          } else if (folTra == 3) {
+            if (++mixMusic > 1 ) mixMusic = 0;
+            menu_play(5);
+          } else if (folTra == 4) {
+            move_enc(&volume2, drift, 0, 30, false);
+            myMP3.volume(volume2);
+            menu_play(2);
           }
-          tracks2 = myMP3.numTracksInFolder(folder2);
-          num2 = 1;
-          menu_play(1);
-        } else if (folTra == 2) {
-          menu_play(4);
-        } else if (folTra == 3) {
-          volume2 = constrain(volume2, 0, 30);
-          myMP3.volume(volume2);
-          menu_play(2);
-        }
+          break;
 
-      } else if (Menu == 3 && MenuFlag == 4) {
-        menu_nastr();
-      } else if (Menu == 4 && MenuFlag == 5) {
-        mushket();
-      } else if (MenuFlag == 12) {
-        ManDrink[(ManRum - 1)] = constrain(ManDrink[(ManRum - 1)], 20, MAX_DRINK);
-        multi_naliv2();
-      } else if (MenuFlag == 31) {
-        volume = constrain(volume, 0, 30);
-        menu_vol(1);
-      } else if (MenuFlag == 41) {
-        servoPos = constrain(servoPos, 0, 180);
-        write9(servoPos);
-        servo_calibr(2);
-        shotPos[count] = servoPos;
-      } else if (MenuFlag == 15) {
-        bright = constrain(bright, 0, 254);
-        menu_brigh(1);
-        strip.setBrightness(bright);
-#ifdef LED_TOWER
-        strip2.setBrightness(bright);
+        case 4:  // меню настроек
+#ifdef BAT_MONITOR_ON
+          move_enc(&subNastr, drift, 1, 9, true); // Перемещение  по меню настроек
+#else
+          move_enc(&subNastr, drift, 1, 8, true); // Перемещение  по меню настроек
 #endif
-      } else if (MenuFlag == 16) {
-        barMan = !barMan;
-        bar_man(1);
-      } else if (MenuFlag == 32) {
-        if (++mixTracks > 1 ) mixTracks = 0;
-        mix_track();
-      } else if (MenuFlag == 33) {
-        tracks = myMP3.numTracksInFolder(folder);
-        if (tracks > 100) tracks = 100;
+          menu_nastr();
+          break;
 
-        num_folder(1);
-      } else if (MenuFlag == 42) {
-        speedSer = constrain(speedSer, 2, 30);
-        servo_speed(1);
-      } else if (MenuFlag == 19) {
-        sleepTime = constrain(sleepTime, 0, 19);
-        sleep_time(1);
-      } else if (MenuFlag == 20) {
-        time50ml = constrain(time50ml, 1000, 9999);
-        kalibr_pump(1);
-      } else if (MenuFlag == 30) {
-        menu_tost();
-      } else if (MenuFlag == 40) {
-        menu_servo();
+        case 5:   // меню выбора игры мушкетёров
+          move_enc(&subMush, drift, 1, 2, true); // Перемещение  по мушкетёрам
+          mushket();
+          break;
+
+        case 12: // меню настройки дриньков мультиразлива
+          move_enc(&ManDrink[(ManRum - 1)], drift * 5, MIN_DRINK, MAX_DRINK, false);
+          multi_naliv2();
+          break;
+
+        case 15: // меню настройки яркости led
+          move_enc(&bright, drift * 5, 0, 255, false);
+          menu_brigh(1);
+          strip.setBrightness(bright);
+#ifdef LED_TOWER
+          strip2.setBrightness(bright);
+#endif
+          break;
+
+        case 16: // меню включения-выключения бармена
+          if (++barMan > 1) barMan = 0;
+          bar_man(1);
+          break;
+
+        case 19: // меню настройки времени таймера сна
+          move_enc(&sleepTime, drift, 0, 19, false);
+          sleep_time(1);
+          break;
+
+        case 20: //  меню настройки времени налива 50 мл.
+          move_enc(&time50ml, drift * 50, 1000, 9950, false);
+          kalibr_pump(1);
+          break;
+
+        case 30: // меню выбора настройки тостов
+          move_enc(&subMenu, drift, 1, 3, true); // Перемещение  по меню тостов
+          menu_tost();
+          break;
+
+        case 31: //  меню настройки громкости тостов
+          move_enc(&volume, drift, 0, 30, false);
+          menu_vol(1);
+          break;
+
+        case 32: // меню включения-выключения перемешивания тостов
+          if (++mixTracks > 1 ) mixTracks = 0;
+          mix_track();
+          break;
+
+        case 33: // меню выбора папки тостов
+          move_enc(&folder, drift, 1, 9, true); // Перемещение  по меню папок
+          tracks = myMP3.numTracksInFolder(folder);
+          if (tracks > 100) tracks = 100;
+          num_folder(1);
+          break;
+
+        case 40:  // меню выбора настроек серво
+          move_enc(&subMenu, drift, 1, 2, true); // Перемещение  по меню настроек серво
+          menu_servo();
+          break;
+
+        case 41: // меню настройки позиции серво над рюмками
+#ifdef SERVO_CHANGE_DIRECTION
+          move_enc(&servoPos, drift, 1, INITAL_ANGLE_SERVO, false);
+          servo.write(INITAL_ANGLE_SERVO - servoPos);
+#else
+          move_enc(&servoPos, drift, 1, 180, false);
+          servo.write(servoPos);
+#endif
+          servo_calibr(2);
+          shotPos[count] = servoPos;
+          break;
+
+        case 42: // меню настройки скорости серво
+          move_enc(&speedSer, -drift, 2, 30, false);
+          servo_speed(1);
+          break;
+
       }
+      drift = 0;
     }
+
+
 
 
 
     if (enc.isDouble()) { // двойной клик кнопки энкодера
       if (MenuFlag == 3 && tracks2 != -1) {
-        if (folTra == 1) lcd.setCursor(8, 0);   //  на выборе папки
-        else if (folTra == 2) lcd.setCursor(10, 1); // на треках
-        else if (folTra == 3) lcd.setCursor(14, 0);  // на громкости
-        else if (folTra == 4) lcd.setCursor(15, 1);  //  на вкл-выкл play
-        print_lcd(80);
-        if (!player) (folTra >= 3 ) ? folTra = 1 : folTra++;
-        else (folTra >= 4 ) ? folTra = 1 : folTra++;
+        switch (folTra) {
+          case 1: lcd.setCursor(6, 0); break;   //  на выборе папки
+          case 2: lcd.setCursor(10, 1); break; // на треках
+          case 3: lcd.setCursor(8, 0); break;  //  на рандоме
+          case 4: lcd.setCursor(14, 0); break;  //  на громкости
+          case 5: lcd.setCursor(15, 1); break;  //  на вкл-выкл play
+        }
+        print_lcd(79);// пробел
+        if (!player) {
+          (folTra >= 4 ) ? folTra = 1 : folTra++;
+        } else {
+          (folTra >= 5 ) ? folTra = 1 : folTra++;
+          if (folTra == 3 ) folTra++;
+        }
 
         menu_play(3);
       } else {
@@ -190,6 +173,15 @@ void encTick() {
       }
     }
 
+    if (enc.isTriple()) { // тройной клик кнопки энкодера
+      if (Menu == 1 && MenuFlag == 2) {
+        MenuFlag = 12;
+        multi_naliv2();
+      } else if (MenuFlag == 16 ) { // меню настройки долив-бармен
+        if (++noTostBarmen > 1) noTostBarmen = 0;
+        bar_man(3);
+      }
+    }
 
 
     if (enc.isHolded()) { // длительное нажатие кнопки энкодера
@@ -199,19 +191,27 @@ void encTick() {
         flag = true;
       } else if (MenuFlag != 0 && MenuFlag <= 5) { //Выход в главное меню
         oled_menu();
-        if (MenuFlag == 3) { // если были в меню плеера , то обновляем громкость плеера
-          address = 100;
+        if (MenuFlag == 3) { // если были в меню плеера , то обновляем громкость плеера и рандом
 #ifdef MEMORY_ON
+          address = 100;
           EEPROM.update(address, volume2);
+          delay(5);
+          address = 110;
+          EEPROM.update(address, mixMusic);
 #endif
         }
         MenuFlag = 0;
       } else if (MenuFlag == 12) { //Выход из меню настроек мультиразлива в главное меню настроек
-        MenuFlag = 4;
-        menu_nastr();
-        address = 10;
+        if (Menu == 1) {
+          MenuFlag = 2;
+          multi_naliv();
+        } else {
+          MenuFlag = 4;
+          menu_nastr();
+        }
 #ifdef MEMORY_ON
-        for (uint8_t i = 0; i < 6; i++) {
+        address = 10;
+        for (uint8_t i = 0; i < NUM_SHOTS; i++) {
           EEPROM.update(address, ManDrink[i]); // обновляем в памяти, дриньки для мультиразлива
           address++;
           delay(5);
@@ -221,15 +221,15 @@ void encTick() {
         MenuFlag = 30;
         menu_tost();
         myMP3.volume(volume);
-        address = 20;
 #ifdef MEMORY_ON
+        address = 20;
         EEPROM.update(address, volume);
 #endif
       } else if (MenuFlag == 32) { //Выход из меню перемешивания  в меню тоста
         MenuFlag = 30;
         menu_tost();
-        address = 70;
 #ifdef MEMORY_ON
+        address = 70;
         EEPROM.update(address, mixTracks); // обновляем в памяти флаг перемешивания тостов
 #endif
         mix();  // перемешиваем треки, если включено
@@ -240,8 +240,8 @@ void encTick() {
           oldFolder = folder;
           mix();  // перемешиваем треки, если включено
         }
-        address = 80;
 #ifdef MEMORY_ON
+        address = 80;
         EEPROM.update(address, folder); // обновляем в памяти выбор папок
 #endif
       } else if (MenuFlag == 41) { //Выход из меню  калибровки  сервы в меню настроек сервы
@@ -256,9 +256,9 @@ void encTick() {
 #endif
         } while (moving);
         menu_servo();
-        address = 0;
 #ifdef MEMORY_ON
-        for (uint8_t i = 0; i < 6; i++) {
+        address = 0;
+        for (uint8_t i = 0; i < NUM_SHOTS; i++) {
           EEPROM.update(address, shotPos[i]); // обновляем в памяти положение для сервы
           address++;
           delay(5);
@@ -272,22 +272,28 @@ void encTick() {
         clearLed = true;
         TOWERtimer.reset();
 #endif
-        address = 30;
 #ifdef MEMORY_ON
+        address = 30;
         EEPROM.put(address, bright); // обновляем в памяти яркость led
 #endif
       } else if (MenuFlag == 16) { // выход из режима включения бармена
         MenuFlag = 4;
         menu_nastr();
-        address = 90;
 #ifdef MEMORY_ON
+        address = 90;
         EEPROM.update(address, noDoliv); // обновляем в памяти долив
+        delay(5);
+        address = 120;
+        EEPROM.update(address, barMan); // обновляем в памяти режим бармена
+        delay(5);
+        address = 130;
+        EEPROM.update(address, noTostBarmen); // обновляем в памяти тосты в режиме бармен
 #endif
       } else if (MenuFlag == 42) { // выход из настроки скорости серво в меню настройки серво
         MenuFlag = 40;
         menu_servo();
-        address = 40;
 #ifdef MEMORY_ON
+        address = 40;
         EEPROM.update(address, speedSer); // обновляем в памяти скорость сервы
 #endif
 #ifdef BAT_MONITOR_ON
@@ -298,8 +304,8 @@ void encTick() {
       } else if (MenuFlag == 19) {  // выход из меню настройки таймера сна в менюнастроек
         MenuFlag = 4;
         menu_nastr();
-        address = 50;
 #ifdef MEMORY_ON
+        address = 50;
         EEPROM.update(address, sleepTime); // обновляем в памяти таймер сна
 #endif
         if (sleepTime != 0) SAVEtimer.setInterval(sleepTime * 30000UL);
@@ -314,8 +320,8 @@ void encTick() {
 #endif
         } while (moving);
         menu_nastr();
-        address = 60;
 #ifdef MEMORY_ON
+        address = 60;
         EEPROM.put(address, time50ml); // обновляем в памяти время налива 50 мл.
 #endif
       } else if (MenuFlag == 30 || MenuFlag == 40) { // выход из меню настройки тостов и серво в меню настроек
@@ -348,7 +354,6 @@ void encTick() {
         check = true;
         pumpOFF();                // помпу выкл
         moving = false;
-        barMan = false;
         if (ledShowOn) {
           ledShow = false;
 #ifdef LED_TOWER
@@ -360,7 +365,7 @@ void encTick() {
         }
         lcd.clear();
         lcd.setCursor(5, 1);
-        print_lcd(71);//  ОТБОЙ!
+        print_lcd(70);//  ОТБОЙ!
         play_track(4); //  трек в папке mp3,
 
         do {
@@ -394,10 +399,10 @@ void encTick() {
         MenuFlag = 1;
         oled_auto();
       } else if (MenuFlag == 1 || MenuFlag == 2 ) { //Начинается автоматический разлив
-        if (!barMan && readySystem) {
+        if (barMan == 0 && readySystem) {
           systemON = true;
           flag = true; // флаг ,если пустые рюмки найдены показываем меню налива
-          if (noDoliv >= 1) readySystem = false;
+          if (noDoliv == 1) readySystem = false;
 #ifdef BUTTON_TOWER
           if ( stateBut) promivka = true;
 #endif
@@ -419,22 +424,24 @@ void encTick() {
         MenuFlag = 2;
         multi_naliv();
       } else if (Menu == 2 && MenuFlag == 0) { // меню плеера
-        if (!player) tracks2 = myMP3.numTracksInFolder(folder2);
-
+        if (!player) {
+          tracks2 = myMP3.numTracksInFolder(folder2);
+          if (tracks2 > 100) tracks2 = 100;
+        }
         if (tracks2 == -1) folTra = 1; // галочка на выборе папок
-
         MenuFlag = 3;
         menu_play(0);
       } else if (Menu == 2 && MenuFlag == 3) { // вошли в меню плеера
         if (!player && tracks2 != -1) {
+          mix_music();
           nextTrack = true;
           myMP3.volume(volume2);
           folTra = 2;
         } else {
           if (folTra == 2) {
-            if (oldNum == num2 && num2 < tracks2 ) num2++;
+            if (oldNum == num2) num2++;
             nextTrack = true;
-          } else if (folTra == 4) {
+          } else if (folTra == 5) {
             player = false;
             myMP3.stop();
             folTra = 1;
@@ -447,49 +454,59 @@ void encTick() {
         MenuFlag = 4;
         menu_nastr();
       } else if (Menu == 3 && MenuFlag == 4) { // вошли в меню настроек
-        if (subNastr == 1) {  // промывка
-          MenuFlag = 11;
-          menu_promivka(0);
-        } else if (subNastr == 2) { //мультиразлив
-          MenuFlag = 12;
-          multi_naliv2();
-        } else if (subNastr == 3) { //   меню тосты
-          MenuFlag = 30;
-          if (player) {
-            player = false;
-            pause = false;
-            myMP3.stop();
-            playOn = true;
-          }
-          subMenu = 1;
-          menu_tost();
-        } else if (subNastr == 4) { // серво
-          MenuFlag = 40;
-          subMenu = 1;
-          menu_servo();
-        } else if (subNastr == 5) { // яркость led
-          MenuFlag = 15;
-          menu_brigh(0);
-        } else if (subNastr == 6) { // режим бармен
-          MenuFlag = 16;
-          bar_man(0);
-        } else if (subNastr == 7) { // калибровка помпы
-          MenuFlag = 20;
-          kalibr_pump(0);
-        } else if (subNastr == 8) { // таймер сна
-          MenuFlag = 19;
-          sleep_time(0);
+        switch (subNastr) {
+          case 1:  // промывка
+            MenuFlag = 11;
+            menu_promivka(0);
+            break;
+          case 2:  //мультиразлив
+            MenuFlag = 12;
+            multi_naliv2();
+            break;
+          case 3:  //   меню тосты
+            MenuFlag = 30;
+            if (player) {
+              player = false;
+              pause = false;
+              myMP3.stop();
+              playOn = true;
+            }
+            subMenu = 1;
+            menu_tost();
+            break;
+          case 4:  // серво
+            MenuFlag = 40;
+            subMenu = 1;
+            menu_servo();
+            break;
+          case 5:  // яркость led
+            MenuFlag = 15;
+            menu_brigh(0);
+            break;
+          case 6:  // режим бармен
+            MenuFlag = 16;
+            bar_man(0);
+            break;
+          case 7:  // калибровка помпы
+            MenuFlag = 20;
+            kalibr_pump(0);
+            break;
+          case 8:  // таймер сна
+            MenuFlag = 19;
+            sleep_time(0);
+            break;
 #ifdef BAT_MONITOR_ON
-        } else if (subNastr == 9) { // напряжение батареи
-          MenuFlag = 18;
-          bat_volt();
+          case 9:  // напряжение батареи
+            MenuFlag = 18;
+            bat_volt();
+            break;
 #endif
         }
       } else if (Menu == 4 && MenuFlag == 0) { // меню мушкетёры
         MenuFlag = 5;
         mushket();
       } else if (Menu == 4 && MenuFlag == 5) { // вошли в меню мушкетёры
-        barMan = false;
+        //barMan = 0;
         MenuFlag = 6;
         oled_auto();
       } else if (MenuFlag == 6 ) { // начинаем розлив мушкетёров
@@ -507,7 +524,6 @@ void encTick() {
       } else if (MenuFlag == 40 && subMenu == 1 ) {  // вошли из меню сервы в настройку положения сервы над рюмками
         MenuFlag = 41;
         servo_calibr(0);
-
       } else if (MenuFlag == 40 && subMenu == 2 ) {  // вошли из меню сервы в настройку  скорости сервы
         MenuFlag = 42;
         servo_speed(0);
