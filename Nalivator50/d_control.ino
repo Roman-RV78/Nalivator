@@ -339,6 +339,10 @@ void encTick() {
   if ( enc.isSingle()) { // одиночный клик
     SAVEtimer.reset();
     if (save) {
+#ifdef SEVE_MODE_CONDITION
+      digitalWrite(SEVE_MODE_PIN, HIGH);
+      delay(100);
+#endif
       play_track(17);
       save = false;
       lcd.backlight();

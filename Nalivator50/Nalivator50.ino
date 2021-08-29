@@ -26,6 +26,7 @@
 //#define LED_TOWER  // светодиоды на башне. Раcкомментировать если есть
   #if (DEBUG_UART == 0)
     //#define BUTTON_TOWER  // сенсорная кнопка на башне. Раскомментировать если есть
+    //#define SEVE_MODE_CONDITION  // включение пина состояния спящего режима , пин RX ардуино нано, Раскомментировать если есть
   #endif
   
 // изменить значения если серво не доезжает до нужных углов, не всегда эффективно!
@@ -98,6 +99,9 @@
  #ifdef BUTTON_TOWER
     #define BUT_TOWER_PIN 1 // пин кнопки на башне для arduino nano
  #endif
+ #ifdef SEVE_MODE_CONDITION
+   #define SEVE_MODE_PIN 0 // пин режима энеогосбережения для arduino nano
+ #endif
 //               =========== ПИНЫ ARDUINO MEGA ===========
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
   #define SERVO_PIN   2 // пин серво для arduino mega. Можно только 2, 3, 5, 6, 7, 8, 11, 12, 13, 44, 45, 46 пины!!!!!!!!
@@ -138,6 +142,9 @@
   #ifdef BUTTON_TOWER
     #define BUT_TOWER_PIN 22 // пин кнопки на башне для arduino mega
   #endif
+  #ifdef SEVE_MODE_CONDITION
+    #define SEVE_MODE_PIN 23 // пин режима энеогосбережения для arduino mega
+  #endif  
 #else
  #error "ВЫБРАНА НЕ ВЕРНАЯ ПЛАТА АРДУИНО!!!"
 #endif

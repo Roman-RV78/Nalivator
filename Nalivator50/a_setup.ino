@@ -47,6 +47,10 @@ void setup() {
 #ifdef BUTTON_TOWER
   pinMode(BUT_TOWER_PIN, INPUT);
 #endif
+#ifdef SEVE_MODE_CONDITION
+   pinMode(SEVE_MODE_PIN, OUTPUT);
+   digitalWrite(SEVE_MODE_PIN, HIGH);
+#endif
   Procent = 1;
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, shotPos[i]); // считываем из памяти положение для сервы

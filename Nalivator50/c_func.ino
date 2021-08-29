@@ -19,6 +19,10 @@ void flowTick() {
         yesGlass++;
         SAVEtimer.reset();
         if (save) {
+#ifdef SEVE_MODE_CONDITION
+          digitalWrite(SEVE_MODE_PIN, HIGH);
+          delay(100);
+#endif
           play_track(17); // звук просыпания
           save = false;
           enc.rst();
@@ -341,6 +345,10 @@ void energy_saving() {
     save = true;
     strip.clear();
     strip.show();
+#ifdef SEVE_MODE_CONDITION
+    delay(1000);
+    digitalWrite(SEVE_MODE_PIN, LOW);
+#endif
   }
 }
 
