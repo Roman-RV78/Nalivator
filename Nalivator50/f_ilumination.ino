@@ -50,6 +50,7 @@ void CvetoMuzik() {
       else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 0, 0));
 #endif
     }
+    LEDtimer.setInterval(GLASS_RAINBOW_ILLUMINATION_TIMER);
     LEDtimer.reset();
     LEDchanged = true;
     check = false;

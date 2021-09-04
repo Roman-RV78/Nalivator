@@ -38,9 +38,11 @@
 #define COLOR_EMPTY_GLASS 255 , 0 , 0  // цвет пустой рюмки  R G B , здесь красный
 
 // настройки для иллюминации стола после разлива и иллюминации наливающейся рюмки
-#define INTENSITY_COLOR_CHANGE_GLASS 30 // можно поменять , интенсивность смены цвета при розливе на рюмке
-#define TABLE_RAINBOW_STEP 60 //увеличивает шаг радуги стола после розлива, можно поиграться значением
-#define NUMBER_ILLUMINATION_PASSES 24 // условное число проходов иллюминации стола после налива
+#define INTENSITY_COLOR_CHANGE_GLASS 50 // можно поменять , интенсивность смены цвета при розливе на рюмке
+#define TABLE_RAINBOW_STEP 40 //увеличивает шаг радуги стола после розлива, можно поиграться значением
+#define NUMBER_ILLUMINATION_PASSES 60 // условное число проходов иллюминации стола после налива
+#define TABLE_RAINBOW_ILLUMINATION_TIMER 20 // мс, время последовательного переключения цвета светодиодов при радуге стола
+#define GLASS_RAINBOW_ILLUMINATION_TIMER 200 // мс,  время переключения следующего цвета светодиода при наливе рюмки
 
 // =========== ЛИБЫ ===========
 #include <EEPROM.h>
@@ -176,7 +178,7 @@ Adafruit_TiCoServo servo;
 
 
 
-timerMinim LEDtimer(50);
+timerMinim LEDtimer(TABLE_RAINBOW_ILLUMINATION_TIMER);
 timerMinim FLOWdebounce(20);
 timerMinim WAITtimer(PRE_PAUSE);
 timerMinim TIMEProcent(2000);

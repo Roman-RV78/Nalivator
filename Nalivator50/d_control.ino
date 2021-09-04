@@ -486,6 +486,7 @@ void encTick() {
           case 5:  // яркость led
             MenuFlag = 15;
             menu_brigh(0);
+            LEDtimer.setInterval(TABLE_RAINBOW_ILLUMINATION_TIMER);
             break;
           case 6:  // режим бармен
             MenuFlag = 16;

@@ -158,6 +158,7 @@ void flowRoutnie() {
 
             if (ledShowOn) {
               ledShow = true;
+              LEDtimer.setInterval(TABLE_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER
               TOWERtimer.setInterval(20);
               rainbow = true;
