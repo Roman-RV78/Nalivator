@@ -19,11 +19,13 @@ void setup() {
 
 #endif
 #if  defined(__AVR_ATmega328P__)
-  mySerial.begin (9600);
+  //mySerial.begin (9600);
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-  Serial3.begin(9600);
+  //Serial3.begin(9600);
 #endif
-myMP3.begin();
+
+myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, таймаут порта мс. Если глюки плеера, пробовать увеличить таймаут, штатно он вообще 10 секунд, но это много
+
   // настройка пинов
   pinMode(PUMP_POWER, OUTPUT);
 #if (PUMP_LEVEL == 0)

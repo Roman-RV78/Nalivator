@@ -34,7 +34,7 @@ void encTick() {
             num2 = 0;
             menu_play(1);
           } else if (folTra == 2) {
-            move_enc(&num2, drift, 0, tracks2, false);
+            move_enc(&num2, drift, 0, tracks2 - 1, false);
             menu_play(4);
           } else if (folTra == 3) {
             if (++mixMusic > 1 ) mixMusic = 0;
@@ -429,7 +429,6 @@ void encTick() {
         multi_naliv();
       } else if (Menu == 2 && MenuFlag == 0) { // меню плеера
         if (!player) {
-          //tracks2 = myMP3.numTracksInFolder(folder2);
           tracks2 = myMP3.getFolderTrackCount(folder2);
           if (tracks2 > 100) tracks2 = 100;
         }
