@@ -3,7 +3,6 @@ void Tost() {
   if ( tost ) {
     if (!readyTost && PAUSEtimer.isReady()) {
       if (volume != 0 && tracks != -1 ) {
-        myMP3.setVolume(volume);
         lcd.clear();
         lcd.setCursor(4, 0);
         print_lcd(2);//  ТРЕК
@@ -33,6 +32,7 @@ void Tost() {
           player = true;
           PLAYtimer.reset();
           pause = false;
+          myMP3.setVolume(volume2);
         }
         returnMenu = true;
       }

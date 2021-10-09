@@ -145,16 +145,20 @@ void flowRoutnie() {
               PAUSEtimer.setInterval(4000);
               oled_nalito(); // Выводим на экран налито ...
               tost = true;
-              if (player && volume != 0 && tracks != -1 ) {
+              if (player) {
                 playOn = true;
                 player = false;
-                myMP3.stop();
               }
             } else {
               PAUSEtimer.setInterval(100);
               returnMenu = true;
             }
-            if (!player && volume != 0 ) myMP3.stop();
+            if (!player && volume != 0 && tracks != -1 ) {
+              myMP3.stop();
+              delay(100);
+              myMP3.setVolume(volume);
+              delay(100);
+            }
 
             if (ledShowOn) {
               ledShow = true;
@@ -469,7 +473,7 @@ void play_next() {
     if (digitalRead(BUSY_PIN)) {
       if (playOn) {
         playOn = false;
-        myMP3.setVolume(volume2);
+        //myMP3.setVolume(volume2);
       }
       nextTrack = true;
       num2++;
