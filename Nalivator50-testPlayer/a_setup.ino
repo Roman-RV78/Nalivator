@@ -5,26 +5,15 @@ void setup() {
   strip2.clear();
   strip2.show();
 #endif
-  delay(1000);
-#if (DEBUG_UART == 1)
-  Serial.begin(9600);
-#endif
+
 #ifdef BAT_MONITOR_ON
 #if  defined(__AVR_ATmega328P__)
   analogReference(INTERNAL);
 #elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
   analogReference(INTERNAL1V1);
 #endif
-
-
-#endif
-#if  defined(__AVR_ATmega328P__)
-  //mySerial.begin (9600);
-#elif defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-  //Serial3.begin(9600);
 #endif
 
-myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, таймаут порта мс. Если глюки плеера, пробовать увеличить таймаут, штатно он вообще 10 секунд, но это много
 
   // настройка пинов
   pinMode(PUMP_POWER, OUTPUT);
@@ -47,9 +36,11 @@ myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, тай
   pinMode(BUT_TOWER_PIN, INPUT);
 #endif
 #ifdef SEVE_MODE_CONDITION
-   pinMode(SEVE_MODE_PIN, OUTPUT);
-   digitalWrite(SEVE_MODE_PIN, HIGH);
+  pinMode(SEVE_MODE_PIN, OUTPUT);
+  digitalWrite(SEVE_MODE_PIN, HIGH);
 #endif
+
+
   Procent = 1;
   for (uint8_t i = 0; i < NUM_SHOTS; i++) {
     EEPROM.get(address, shotPos[i]); // считываем из памяти положение для сервы
@@ -111,14 +102,19 @@ myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, тай
   if ( barMan > 1) barMan = 1;
 
   address = 130;
-  EEPROM.get(address, noTostBarmen); // считываем из памяти флаг режима бармен
+  EEPROM.get(address, noTostBarmen); // считываем из памяти флаг тостов в  бармене
   if ( noTostBarmen > 1) noTostBarmen = 1;
 
   Procent = 0;
 
-  delay (100);//Между двумя командами необходимо делать задержку 100 миллисекунд, в противном случае некоторые команды могут работать не стабильно.
+#if (DEBUG_UART == 1)
+  Serial.begin(9600);
+#endif
+
+  myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, таймаут порта мс. Если глюки плеера, пробовать увеличить таймаут, штатно он вообще 10 секунд, но это много
+  delay (1000);
   myMP3.setEq(DfMp3_Eq_Normal);
-  delay (100);
+  delay (100); //Между двумя командами необходимо делать задержку 100 миллисекунд, в противном случае некоторые команды могут работать не стабильно.
   tracks = myMP3.getFolderTrackCount(folder); // считываем колличество треков в папке 01-09 в корне флешки, не больше 100
   if (tracks > 100) tracks = 100;
   delay (100);
@@ -142,17 +138,17 @@ myMP3.begin(9600, PLAYER_SERIAL_TIMEOUT); // скорость порта, тай
   //servo.attach(SERVO_PIN);
   servo.attach(SERVO_PIN, SERVO_MIN, SERVO_MAX);
 #ifdef STARTING_POS_SERVO_GLASS1
-  #ifdef SERVO_CHANGE_DIRECTION
-    servo.write(INITAL_ANGLE_SERVO - shotPos[0]);
-  #else
-    servo.write(shotPos[0]);
-  #endif
-#else 
-  #ifdef SERVO_CHANGE_DIRECTION
-     servo.write(INITAL_ANGLE_SERVO);
-  #else
-    servo.write(0);
-  #endif
+#ifdef SERVO_CHANGE_DIRECTION
+  servo.write(INITAL_ANGLE_SERVO - shotPos[0]);
+#else
+  servo.write(shotPos[0]);
+#endif
+#else
+#ifdef SERVO_CHANGE_DIRECTION
+  servo.write(INITAL_ANGLE_SERVO);
+#else
+  servo.write(0);
+#endif
 #endif
   delay(2000);
   oled_menu();

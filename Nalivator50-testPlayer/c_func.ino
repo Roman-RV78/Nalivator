@@ -157,7 +157,6 @@ void flowRoutnie() {
               myMP3.stop();
               delay(100);
               myMP3.setVolume(volume);
-              delay(100);
             }
 
             if (ledShowOn) {
@@ -586,6 +585,7 @@ void play_mushket() {
       if (volume != 0 ) {
         if (ledShowOn) {
           ledShow = true;
+          LEDtimer.setInterval(TABLE_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER
           TOWERtimer.setInterval(20);
           rainbow = true;
@@ -649,6 +649,7 @@ void play_mushket() {
       randomGlass = 0;
       if (ledShowOn) {
         if (ledShow) check = true;
+        LEDtimer.setInterval(GLASS_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER
         TOWERtimer.setInterval(50);
         if (mig || rainbow ) {
