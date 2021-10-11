@@ -30,7 +30,7 @@ void setup() {
     pinMode(SW_pins[i], INPUT);
 #endif
   }
-  pinMode(BUSY_PIN, INPUT);
+  pinMode(BUSY_PIN, INPUT_PULLUP);
 
 #ifdef BUTTON_TOWER
   pinMode(BUT_TOWER_PIN, INPUT);
