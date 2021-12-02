@@ -41,25 +41,25 @@ void CvetoMuzik() {
   if (check) { // проверка рюмок
     for (led = 0; led < NUM_SHOTS; led++) {
 #ifndef LED_CHANGE_DIRECTION
-#ifdef TWO_PUMPS
+  #ifdef TWO_PUMPS
       if (shotStates[led] == EMPTY) {
         if (pourFrom[led] == 0) strip.setLED(led, mRGB(COLOR_EMPTY_GLASS_1)); // подсветили
         else if (pourFrom[led] == 1) strip.setLED(led, mRGB(COLOR_EMPTY_GLASS_2)); // подсветили
       }
-#else
+  #else
       if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(COLOR_EMPTY_GLASS_1));                    // налитая рюмка, статус: готов
-#endif
-      else if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(COLOR_POURET_GLASS));
+  #endif
+      else if (shotStates[led] == READY) strip.setLED(led, mRGB(COLOR_POURET_GLASS));
       else if (shotStates[led] == NO_GLASS) strip.setLED(led, mRGB(0, 0, 0));
 #else
-#ifdef TWO_PUMPS
+  #ifdef TWO_PUMPS
       if (shotStates[led] == EMPTY) {
         if (pourFrom[led] == 0) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_GLASS_1));                    // налитая рюмка, статус: готов
         else if (pourFrom[led] == 1) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_GLASS_2));                    // налитая рюмка, статус: готов
       }
-#else
+  #else
       if (shotStates[led] == EMPTY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_GLASS_1));                    // налитая рюмка, статус: готов
-#endif
+  #endif
       else if (shotStates[led] == READY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_POURET_GLASS));
       else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 0, 0));
 #endif

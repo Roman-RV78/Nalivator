@@ -434,6 +434,9 @@ void encTick() {
         MenuFlag = 1;
         oled_auto();
       } else if (MenuFlag == 1 || MenuFlag == 2 ) { //Начинается автоматический разлив
+#ifdef DOP_SOUND
+        if (MenuFlag == 1) dopSound = true;
+#endif
         if (barMan == 0 && readySystem) {
           systemON = true;
           flag = true; // флаг ,если пустые рюмки найдены показываем меню налива

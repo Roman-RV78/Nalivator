@@ -124,6 +124,9 @@ void flowRoutnie() {
             }
 
             if (!noGlass) { //  нашли хоть одну рюмку
+#ifdef DOP_SOUND
+              if (dopSound) dop_sound();
+#endif
 #if(SOUND_THEME == 1)
               if ( digitalRead(BUSY_PIN) && !promivka && MenuFlag != 20) {
                 play_track(53); //  трек в папке mp3 ,  движения башни танка
@@ -601,7 +604,20 @@ void play_track(uint8_t tr) {
   if (!player && volume != 0 ) myMP3.playMp3FolderTrack(tr);
 }
 
-
+#ifdef DOP_SOUND
+void dop_sound() {
+  if (Drink <= 20) play_track(30);
+  else if (Drink <= 30) play_track(31);
+  else if (Drink <= 35) play_track(32);
+  else if (Drink <= 40) play_track(33);
+  else if (Drink <= 45) play_track(34);
+  else if (Drink <= 50) play_track(35);
+  delay(500);
+  while ( !digitalRead(BUSY_PIN))
+    delay(500);
+  dopSound = false;
+}
+#endif
 
 void play_mushket() {
   static bool muveServo = false;
