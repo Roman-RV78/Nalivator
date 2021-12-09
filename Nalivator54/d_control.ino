@@ -586,7 +586,11 @@ void encTick() {
         if (++noDoliv > 1) noDoliv = 0;
         bar_man(2);
       } else if (MenuFlag == 31) { //меню настройки громкости
-        if (volume != 0) tost = true;  // проверяем громкость
+        if (volume != 0) {
+          myMP3.setVolume(volume);
+          delay(100);
+          tost = true;  // проверяем громкость
+        }
 
       } else if (MenuFlag == 42) {  // двигаем серво туда-обратно для наглядности установленной скорости
         do {
