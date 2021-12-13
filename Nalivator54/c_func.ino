@@ -571,6 +571,9 @@ void button_tower () {
       flagDubl = false;
       if (clickCount >= 2) {
         if (MenuFlag != 6) {
+#ifdef DOP_SOUND
+          if (MenuFlag == 1) dopSound = true;
+#endif
           systemON = true;
           flag = true;
           if (noDoliv >= 1) readySystem = false;
