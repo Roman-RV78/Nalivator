@@ -609,15 +609,17 @@ void play_track(uint8_t tr) {
 
 #ifdef DOP_SOUND
 void dop_sound() {
-  if (Drink <= 20) play_track(30);
-  else if (Drink <= 30) play_track(31);
-  else if (Drink <= 35) play_track(32);
-  else if (Drink <= 40) play_track(33);
-  else if (Drink <= 45) play_track(34);
-  else if (Drink <= 50) play_track(35);
-  delay(500);
-  while ( !digitalRead(BUSY_PIN))
+  if (!player && volume != 0 && digitalRead(BUSY_PIN)) {
+    if (Drink <= 20) myMP3.playMp3FolderTrack(30);
+    else if (Drink <= 30) myMP3.playMp3FolderTrack(31);
+    else if (Drink <= 35) myMP3.playMp3FolderTrack(32);
+    else if (Drink <= 40) myMP3.playMp3FolderTrack(33);
+    else if (Drink <= 45) myMP3.playMp3FolderTrack(34);
+    else if (Drink <= 50) myMP3.playMp3FolderTrack(35);
     delay(500);
+    while ( !digitalRead(BUSY_PIN))
+      delay(500);
+  }
   dopSound = false;
 }
 #endif
