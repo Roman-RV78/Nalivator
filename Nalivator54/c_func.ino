@@ -218,6 +218,9 @@ void flowRoutnie() {
 #if(SOUND_THEME == 1)
           muveBack = true;
 #endif
+#ifdef DOP_SOUND
+          if (dopSound) dopSound = false;
+#endif
           //DEBUG("no glass");
           PAUSEtimer.reset();
         }
