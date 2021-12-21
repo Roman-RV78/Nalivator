@@ -207,6 +207,9 @@ void encTick() {
       if (Menu == 1 && MenuFlag == 2) {
         MenuFlag = 12;
         multi_naliv2();
+      } else if (MenuFlag == 0) { // быстрый переходв меню промывки из главного меню, минуя настройки
+        MenuFlag = 11;
+        menu_promivka(0);
       }
     }
 
@@ -603,8 +606,13 @@ void encTick() {
           servo_move(0);                                     // цель серво - 0
 #endif
         } while (moving);
-        menu_nastr();
-        MenuFlag = 4;
+        if (Menu != 3) {  // если мы не в меню настроек и у нас меню промывка, то выходим при клике в главное меню
+          MenuFlag = 0;
+          oled_menu();
+        } else {
+          menu_nastr();
+          MenuFlag = 4;
+        }
       } else if (MenuFlag == 12 ) { // меню настройки мультиналива
         if (++ManRum > 6) ManRum = 1;
         multi_naliv2();
