@@ -83,7 +83,7 @@ void flowTick() {
 
         }
         //DEBUG("take glass");
-        // DEBUG(i);
+        //DEBUG(i);
         yesGlass--;
 #ifdef TWO_PUMPS
         if (MenuFlag == 20 ) kalibr_pump(0);
@@ -592,7 +592,7 @@ void button_tower () {
     if (flagDubl &&  millis() - butTowTime >= 400) { // двойной клик на башне
       flagDubl = false;
       if (clickCount >= 2) {
-        if (MenuFlag != 6) {
+        if (MenuFlag != 60) {
 #ifdef DOP_SOUND
           if (MenuFlag == 1) dopSound = true;
 #endif
