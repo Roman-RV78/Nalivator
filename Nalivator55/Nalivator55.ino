@@ -6,6 +6,7 @@
 #define DEBUG_UART 0  // отладка, 0 выключено, 1 включено
 #define PRE_PAUSE 1000UL       // пауза серво перед движением к рюмке
 #define POST_PAUSE 500UL  // пауза после остановки сервы до включения помпы
+#define NALITO_PAUSE 3000UL  // время показа меню налито, после розлива
 #define MAX_DRINK 50  // максимальный объём тары мл, для корректного отображения в менюшках экрана, ставить не более 95 и кратный 5
 #define MIN_DRINK 20  // минимальный объём тары мл,  кратный 5
 #define MEMORY_ON // включение запись параметров в память, закомментировано - значит выключено! 
@@ -41,6 +42,7 @@
 #ifdef TWO_PUMPS
 #define COLOR_EMPTY_GLASS_2 0 , 0 , 255  // цвет пустой рюмки для второй помпы,  R G B , здесь синий
 #endif
+
 
 // настройки для иллюминации наливающейся рюмки
 #define INTENSITY_COLOR_CHANGE_GLASS 50 // можно поменять , интенсивность смены цвета при розливе на рюмке
@@ -268,7 +270,7 @@ bool nextTrack = false;
 bool playOn = false; // флаг что плеер был включен
 bool ledShowOn = true;
 bool pause = false;
-bool noTost = false;
+bool noTost = false; // флаг отмены тоста при нажатии на кнопку энкодера или кнопку на башне
 bool playMush = false;
 bool flagMush = false;
 uint8_t noDoliv;
@@ -289,7 +291,7 @@ uint8_t pumpNumber = 0;
 #endif
 
 enum {NO_GLASS, EMPTY, IN_PROCESS, READY} shotStates[NUM_SHOTS];
-enum {SEARCH, MOVING, WAIT, PUMPING} systemState;
+enum {SEARCH, MOVING, WAIT, PUMPING, TOOK } systemState;
 // свои символы
 #ifdef BAT_MONITOR_ON
 int16_t value = 750;   // значение с аналогового пина подключенного к батарее

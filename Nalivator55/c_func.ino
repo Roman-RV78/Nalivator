@@ -23,8 +23,8 @@ void flowTick() {
 #endif
 #endif
         LEDchanged = true;
-        //DEBUG("set glass");
-        //DEBUG(i);
+        DEBUG("set glass");
+        DEBUG(i);
         if (!systemON && !save && !playMush)play_track(i + 20); //  трек в папке mp3, с 20 по 25
         yesGlass++;
         SAVEtimer.reset();
@@ -74,16 +74,27 @@ void flowTick() {
           LEDchanged = true;
         }
         if (i == curPumping ) { // убрали во время заправки!
-          systemState = WAIT;                         // режим работы - ждать
-          WAITtimer.reset();
-          pump1OFF();                                  // помпу выкл
+#ifdef TWO_PUMPS
+          if (pourFrom[curPumping] == 0) pump1OFF();          // помпа выкл
+          else if (pourFrom[curPumping] == 1) pump2OFF();     // помпа выкл
+#else
+          pump1OFF();                                          // помпа выкл
+#endif                                 // помпу выкл
           moving = false;
-          if ( MenuFlag == 20 || promivka ) curPumping = -1;
-          else play_track(2); //  трек в папке mp3,  кто то снял рюмку при наливе
+          if ( MenuFlag == 20 || promivka ) {
+            curPumping = -1;
+            systemState = WAIT;                         // режим работы - ждать
+            WAITtimer.reset();
+          } else {
+            systemState = TOOK;                         // режим работы - взял рюмку во время разлива
+            PAUSEtimer.setInterval(2000); // время которое нужно для полного проговаривания трека Моргунова
+            PAUSEtimer.reset();
+            play_track(2); //  трек в папке mp3,  кто то снял рюмку при наливе
+          }
 
         }
-        //DEBUG("take glass");
-        //DEBUG(i);
+        DEBUG("take glass");
+        DEBUG(i);
         yesGlass--;
 #ifdef TWO_PUMPS
         if (MenuFlag == 20 ) kalibr_pump(0);
@@ -161,7 +172,7 @@ void flowRoutnie() {
         if (!moving) {                                    // едем до упора
           if (DrinkCount > 0 && !promivka && MenuFlag != 20) {
             if ( noTostBarmen == 0 || MenuFlag != 61) {
-              PAUSEtimer.setInterval(4000);
+              PAUSEtimer.setInterval(NALITO_PAUSE);
               oled_nalito(); // Выводим на экран налито ...
               tost = true;
               if (player) {
@@ -189,7 +200,7 @@ void flowRoutnie() {
 #endif
             }
           } else {
-            PAUSEtimer.setInterval(4000);
+            PAUSEtimer.setInterval(NALITO_PAUSE);
             lcd.clear();
             if (yesGlass == 0 || promivka || MenuFlag == 20) {
               lcd.setCursor(3, 1);
@@ -344,6 +355,13 @@ void flowRoutnie() {
         if (MenuFlag == 20) systemON = false;
 
       }
+      break;
+    case TOOK:
+      if (PAUSEtimer.isReady()) {
+        //PAUSEtimer.setInterval(NALITO_PAUSE);
+        systemState = WAIT;
+      }
+      break;
   }
 }
 

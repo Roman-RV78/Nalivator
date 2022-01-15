@@ -371,7 +371,10 @@ void encTick() {
       } else if (MenuFlag == 30 || MenuFlag == 40) { // выход из меню настройки тостов и серво в меню настроек
         MenuFlag = 4;
         menu_nastr();
-        if (playOn) player = true;
+        if (playOn) {
+          player = true;
+          myMP3.setVolume(volume2);
+        }
 
       } else if (MenuFlag == 60) { // выход из меню розлива мушкетёров  в меню мушкетёров
         MenuFlag = 5;

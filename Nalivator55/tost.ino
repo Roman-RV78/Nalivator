@@ -12,12 +12,12 @@ void Tost() {
         print_lcd(3);//  !!! ТОСТ !!!
         myMP3.playFolderTrack(folder, (TostList[num] + 1));
         if (++num >= tracks) num = 0;
+        PAUSEtimer.setInterval(500);
+        PAUSEtimer.reset();
       }
       readyTost = true;
-      PAUSEtimer.setInterval(500);
-      PAUSEtimer.reset();
     }
-      if ((readyTost && ((PAUSEtimer.isReady() && digitalRead(BUSY_PIN)) || noTost )) || volume == 0 || tracks == -1) {
+    if ((readyTost && ((PAUSEtimer.isReady() && digitalRead(BUSY_PIN)) || noTost )) || volume == 0 || tracks == -1) {
       tost = false;
       if (noTost) {
         noTost = false;
