@@ -128,7 +128,8 @@ void setup() {
 #ifdef BAT_MONITOR_ON
   address = 160;
   EEPROM.get(address, coeff_bat); // считываем из памяти коэффициент калибровки АКБ
-  if (coeff_bat > ADC_U_COEFF_HIGH || coeff_bat < ADC_U_COEFF_LOW )coeff_bat = ADC_U_COEFF; //норма
+  if (coeff_bat < ADC_U_COEFF_HIGH || coeff_bat > ADC_U_COEFF_LOW );  //норма
+  else coeff_bat = ADC_U_COEFF; //NaN
 #endif
 
   Procent = 0;
