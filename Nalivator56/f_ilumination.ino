@@ -28,7 +28,7 @@ void CvetoMuzik() {
 
       if (++led >= NUM_SHOTS) {
         led = 0;
-        if (++count == NUMBER_ILLUMINATION_PASSES) {  // колличество проходов иллюминации после налива
+        if (++count == NUMBER_ILLUMINATION_PASSES) {  // количество проходов иллюминации после налива
           count = 0;
           if (MenuFlag != 15 && !playMush) check = true; // если не в меню настроек, то проверяем рюмки
 

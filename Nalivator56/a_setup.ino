@@ -128,7 +128,7 @@ void setup() {
 #ifdef BAT_MONITOR_ON
   address = 160;
   EEPROM.get(address, coeff_bat); // считываем из памяти коэффициент калибровки АКБ
-  if (coeff_bat < ADC_U_COEFF_HIGH || coeff_bat > ADC_U_COEFF_LOW );  //норма
+  if (coeff_bat < ADC_U_COEFF_HIGH && coeff_bat > ADC_U_COEFF_LOW );//норма
   else coeff_bat = ADC_U_COEFF; //NaN
 #endif
 
@@ -142,7 +142,7 @@ void setup() {
   delay (1000);
   myMP3.setEq(DfMp3_Eq_Normal);
   delay (100); //Между двумя командами необходимо делать задержку 100 миллисекунд, в противном случае некоторые команды могут работать не стабильно.
-  tracks = myMP3.getFolderTrackCount(folder); // считываем колличество треков в папке 01-09 в корне флешки, не больше 100
+  tracks = myMP3.getFolderTrackCount(folder); // считываем количество треков в папке 01-09 в корне флешки, не больше 100
   if (tracks > 100) tracks = 100;
   delay (100);
   myMP3.setVolume(volume);

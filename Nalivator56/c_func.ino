@@ -23,8 +23,8 @@ void flowTick() {
 #endif
 #endif
         LEDchanged = true;
-        DEBUG("set glass");
-        DEBUG(i);
+        //DEBUG("set glass");
+        //DEBUG(i);
         if (!systemON && !save && !playMush)play_track(i + 20); //  трек в папке mp3, с 20 по 25
         yesGlass++;
         SAVEtimer.reset();
@@ -358,7 +358,6 @@ void flowRoutnie() {
       break;
     case TOOK:
       if (PAUSEtimer.isReady()) {
-        //PAUSEtimer.setInterval(NALITO_PAUSE);
         systemState = WAIT;
       }
       break;

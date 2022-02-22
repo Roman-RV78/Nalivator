@@ -345,15 +345,13 @@ void menu_play(uint8_t subPlay) {
     if (tracks2 == -1) {
       print_lcd(45);// НЕТ
     } else {
-      if (subPlay != 0) {
-        print_lcd(4);// пробел
-      }
+      if (subPlay != 0) print_lcd(4);// пробел 3
       lcd.setCursor(3, 1);
       lcd.print(tracks2, DEC);
     }
   }
   if (subPlay == 2 || subPlay == 0 ) {
-    if (subPlay != 0) {
+    if (volume2 == 9) {
       lcd.setCursor(13, 0);
       print_lcd(79);
     }
@@ -416,9 +414,9 @@ void menu_vol(uint8_t subVol) {
     print_lcd(50);//  ГРОМКОСТЬ
   }
   if (subVol == 1 || subVol == 0 ) {
-    if (subVol != 0) {
-      lcd.setCursor(12, 1);
-      print_lcd(4);//  пробел 3
+    if ( volume == 9) {
+      lcd.setCursor(14, 1);
+      print_lcd(79);//  пробел 1
     }
     lcd.setCursor(13, 1);
     lcd.print(volume, DEC);
@@ -497,9 +495,9 @@ void servo_speed(uint8_t subSS) {
     print_lcd(49);//  СКОРОСТЬ
   }
   if (subSS == 1 || subSS == 0) {
-    if (subSS != 0) {
-      lcd.setCursor(12, 0);
-      print_lcd(4);// пробел 3
+    if (speedSer == 23) {
+      lcd.setCursor(13, 0);
+      print_lcd(79);// пробел 1
     }
     lcd.setCursor(12, 0);
     lcd.print((map(speedSer, 2, 30, 30, 2)), DEC);
