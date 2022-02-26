@@ -399,7 +399,7 @@ void servo_move(uint8_t target) {
     if ( pos == target ) {
       deadTime = true;
 #if(SOUND_THEME == 1)
-      if (!playMush && !promivka && Menu != 3) play_track(52); //клик башни
+      if (!playMush && !promivka && Menu != SETTINGS) play_track(52); //клик башни
 #endif
     }
   }

@@ -10,30 +10,30 @@ void oled_menu() {
   print_lcd(66);// >
   lcd.setCursor(15, 1);
   print_lcd(65);// <
-  switch (Menu) {
-    case 0:
+  switch ( Menu ) {
+    case EQUALLY: 
       lcd.setCursor(1, 1);
       print_lcd(8);//  ПОРОВНУ
       break;
-    case 1:
+    case MULTI_SPILL: 
       lcd.setCursor(2, 1);
       print_lcd(9);//  МУЛЬТИРАЗЛИВ
       break;
-    case 2:
+    case PLAYER: 
       lcd.setCursor(5, 1);
       print_lcd(10);//  ПЛЕЕР
       break;
-    case 3:
+    case SETTINGS: 
       lcd.setCursor(3, 1);
       print_lcd(11);//  НАСТРОЙКИ
       break;
 
-    case 4:
+    case MUSKETEERS: 
       lcd.setCursor(3, 1);
       print_lcd(71);//  МУШКЕТЁРЫ
       break;
 
-    case 5:
+    case BARMAN: 
       lcd.setCursor(5, 1);
       print_lcd(16);//  БАРМЕН
       break;

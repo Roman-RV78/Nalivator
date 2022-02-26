@@ -212,7 +212,7 @@ void encTick() {
     }
 
     if (enc.isTriple()) { // тройной клик кнопки энкодера
-      if (Menu == 1 && MenuFlag == 2) {
+      if (Menu == MULTI_SPILL && MenuFlag == 2) {
         MenuFlag = 12;
         multi_naliv2();
       } else if (MenuFlag == 0) { // быстрый переходв меню промывки из главного меню, минуя настройки
@@ -246,7 +246,7 @@ void encTick() {
         }
         MenuFlag = 0;
       } else if (MenuFlag == 12) { //Выход из меню настроек мультиразлива в главное меню настроек
-        if (Menu == 1) {
+        if (Menu == MULTI_SPILL) {
           MenuFlag = 2;
           multi_naliv();
         } else {
@@ -475,7 +475,7 @@ void encTick() {
 #endif
           }
         }
-      } else if (Menu == 0 && MenuFlag == 0) { //Нажатие кнопки меню авто
+      } else if (Menu == EQUALLY && MenuFlag == 0) { //Нажатие кнопки меню авто
         MenuFlag = 1;
         oled_auto();
       } else if (MenuFlag == 1 || MenuFlag == 2 ) { //Начинается автоматический разлив
@@ -503,10 +503,10 @@ void encTick() {
 #endif
           }
         }
-      } else if (Menu == 1 && MenuFlag == 0) { // меню мультиразлив
+      } else if (Menu == MULTI_SPILL && MenuFlag == 0) { // меню мультиразлив
         MenuFlag = 2;
         multi_naliv();
-      } else if (Menu == 2 && MenuFlag == 0) { // меню плеера
+      } else if (Menu == PLAYER && MenuFlag == 0) { // меню плеера
         if (!player) {
           tracks2 = myMP3.getFolderTrackCount(folder2);
           if (tracks2 > 100) tracks2 = 100;
@@ -514,7 +514,7 @@ void encTick() {
         if (tracks2 == -1) folTra = 1; // галочка на выборе папок
         MenuFlag = 3;
         menu_play(0);
-      } else if (Menu == 2 && MenuFlag == 3) { // вошли в меню плеера
+      } else if (Menu == PLAYER && MenuFlag == 3) { // вошли в меню плеера
         if (!player && tracks2 != -1) {
           mix_music();
           nextTrack = true;
@@ -533,10 +533,10 @@ void encTick() {
             myMP3.setVolume(volume);
           }
         }
-      } else if (Menu == 3 && MenuFlag == 0) { // меню настроек
+      } else if (Menu == SETTINGS && MenuFlag == 0) { // меню настроек
         MenuFlag = 4;
         menu_nastr();
-      } else if (Menu == 3 && MenuFlag == 4) { // вошли в меню настроек
+      } else if (Menu == SETTINGS && MenuFlag == 4) { // вошли в меню настроек
         switch (subNastr) {
           case 1:  // промывка
             MenuFlag = 11;
@@ -586,15 +586,15 @@ void encTick() {
             break;
 #endif
         }
-      } else if (Menu == 4 && MenuFlag == 0) { // меню мушкетёры
+      } else if (Menu == MUSKETEERS && MenuFlag == 0) { // меню мушкетёры
         MenuFlag = 5;
         mushket();
-      } else if (Menu == 4 && MenuFlag == 5) { // вошли в меню мушкетёры
+      } else if (Menu == MUSKETEERS && MenuFlag == 5) { // вошли в меню мушкетёры
         MenuFlag = 60;
         oled_auto();
       } else if (MenuFlag == 60 ) { // начинаем розлив мушкетёров
         if (readySystem) flagMush = true;
-      } else if (Menu == 5 && MenuFlag == 0) { // меню бармена
+      } else if (Menu == BARMAN && MenuFlag == 0) { // меню бармена
         MenuFlag = 6;
         menu_barmen();
       } else if (MenuFlag == 6) { // вошли в меню бармена
@@ -630,7 +630,7 @@ void encTick() {
           servo_move(0);                                     // цель серво - 0
 #endif
         } while (moving);
-        if (Menu != 3) {  // если мы не в меню настроек и у нас меню промывка, то выходим при клике в главное меню
+        if (Menu != SETTINGS) {  // если мы не в меню настроек и у нас меню промывка, то выходим при клике в главное меню
           MenuFlag = 0;
           oled_menu();
         } else {
