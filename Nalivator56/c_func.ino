@@ -183,7 +183,7 @@ void flowRoutnie() {
               PAUSEtimer.setInterval(100);
               returnMenu = true;
             }
-            if (!player && volume != 0 && tracks != -1 ) {
+            if (!player && volume != 0 && tracks > 0 ) {
               myMP3.stop();
               delay(100);
               myMP3.setVolume(volume);
@@ -516,7 +516,7 @@ void bat_tery() {
 }
 #endif
 void mix() {
-  if (tracks != -1) {
+  if (tracks > 0) {
     for (uint8_t i = 0; i < tracks; i++) TostList[i] = i; // заполняем массив тостов, последовательно значениями
     num = 0;
     if (mixTracks == 1 ) {
@@ -532,7 +532,7 @@ void mix() {
 }
 
 void mix_music() {
-  if (tracks2 != -1) {
+  if (tracks2 > 0) {
     for (uint8_t i = 0; i < tracks2; i++) MusicList[i] = i; // заполняем массив песенок, последовательно значениями
     if (mixMusic == 1 ) {
       randomSeed(CreateTrulyRandomSeed());//  инициализирует генератор псевдослучайных чисел
@@ -772,12 +772,6 @@ void move_enc(uint8_t* var, int16_t shift, int16_t lowLimit, int16_t upLimit, bo
 
 
 void move_enc(int16_t* var, int16_t shift, int16_t lowLimit, int16_t upLimit, bool cycle) {
-  *var += shift;
-  if (*var > upLimit) *var = (cycle) ? lowLimit : upLimit;
-  if (*var < lowLimit) *var = (cycle) ? upLimit : lowLimit ;
-}
-
-void move_enc(int8_t* var, int16_t shift, int16_t lowLimit, int16_t upLimit, bool cycle) {
   *var += shift;
   if (*var > upLimit) *var = (cycle) ? lowLimit : upLimit;
   if (*var < lowLimit) *var = (cycle) ? upLimit : lowLimit ;

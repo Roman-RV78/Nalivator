@@ -86,6 +86,10 @@ void encTick() {
 
         case 19: // меню настройки времени таймера сна
           move_enc(&sleepTime, drift, 0, 19, false);
+          if (sleepTime != 0) {
+            SAVEtimer.setInterval(sleepTime * 30000UL);
+            SAVEtimer.reset();
+          }
           sleep_time(1);
           break;
 
@@ -175,7 +179,7 @@ void encTick() {
 
 
     if (enc.isDouble()) { // двойной клик кнопки энкодера
-      if (MenuFlag == 3 && tracks2 != -1) {
+      if (MenuFlag == 3 && tracks2 > 0) {
         switch (folTra) {
           case 1: lcd.setCursor(6, 0); break;   //  на выборе папки
           case 2: lcd.setCursor(10, 1); break; // на треках
@@ -368,7 +372,6 @@ void encTick() {
         address = 50;
         EEPROM.update(address, sleepTime); // обновляем в памяти таймер сна
 #endif
-        if (sleepTime != 0) SAVEtimer.setInterval(sleepTime * 30000UL);
 
       } else if (MenuFlag == 20) {  // выход из меню настройки помпы в меню настроек
         MenuFlag = 4;
@@ -511,11 +514,11 @@ void encTick() {
           tracks2 = myMP3.getFolderTrackCount(folder2);
           if (tracks2 > 100) tracks2 = 100;
         }
-        if (tracks2 == -1) folTra = 1; // галочка на выборе папок
+        if (tracks2 < 1) folTra = 1; // галочка на выборе папок
         MenuFlag = 3;
         menu_play(0);
       } else if (Menu == PLAYER && MenuFlag == 3) { // вошли в меню плеера
-        if (!player && tracks2 != -1) {
+        if (!player && tracks2 > 0) {
           mix_music();
           nextTrack = true;
           myMP3.setVolume(volume2);

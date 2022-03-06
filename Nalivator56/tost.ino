@@ -2,7 +2,7 @@ void Tost() {
   static bool readyTost = false;
   if ( tost ) {
     if (!readyTost && PAUSEtimer.isReady()) {
-      if (volume != 0 && tracks != -1 ) {
+      if (volume != 0 && tracks > 0 ) {
         lcd.clear();
         lcd.setCursor(4, 0);
         print_lcd(2);//  ТРЕК
@@ -17,7 +17,7 @@ void Tost() {
       }
       readyTost = true;
     }
-    if ((readyTost && ((PAUSEtimer.isReady() && digitalRead(BUSY_PIN)) || noTost )) || volume == 0 || tracks == -1) {
+    if ((readyTost && ((PAUSEtimer.isReady() && digitalRead(BUSY_PIN)) || noTost )) || volume == 0 || tracks < 1) {
       tost = false;
       if (noTost) {
         noTost = false;

@@ -231,8 +231,8 @@ int16_t Procent = 0;
 int8_t count = -1;
 int8_t curPumping = -1;
 int16_t servoPos = 0;
-int8_t volume;
-int8_t volume2;
+uint8_t volume;
+uint8_t volume2;
 uint8_t subNastr = 1;
 uint8_t subMush = 1;
 uint8_t subMenu = 1;
@@ -250,7 +250,7 @@ uint8_t oldFolder;
 uint8_t folder2 = 10;
 uint8_t num = 0;
 uint8_t num2 = 0;
-int8_t sleepTime = 0;
+uint8_t sleepTime = 0;
 uint8_t ManDrink[] = {0, 0, 0, 0, 0, 0};
 uint8_t TostList[100]; // массив номеров треков тостов, в нём перемешаем всё, максимум 100 тостов. нужно ли столько?
 uint8_t MusicList[100]; // массив номеров песенок, в нём перемешаем всё, максимум 100

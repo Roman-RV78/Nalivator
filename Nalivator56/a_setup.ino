@@ -65,7 +65,7 @@ void setup() {
   }
   address = 20;
   EEPROM.get(address, volume); // считываем из памяти громкость
-  if ( volume < 0 || volume > 30) volume = 10;
+  if ( volume > 30) volume = 10;
 
   address = 30;
   EEPROM.get(address, bright); // считываем из памяти яркость led
@@ -77,7 +77,7 @@ void setup() {
 
   address = 50;
   EEPROM.get(address, sleepTime); // считываем из памяти время таймера сна
-  if (sleepTime <= 0 || sleepTime > 20) sleepTime = 0;
+  if ( sleepTime > 20) sleepTime = 0;
   else SAVEtimer.setInterval(sleepTime * 30000UL);
 
   address = 60;
@@ -103,7 +103,7 @@ void setup() {
 
   address = 100;
   EEPROM.get(address, volume2); // считываем из памяти громкость для плеера
-  if ( volume2 < 0 || volume2 > 30) volume2 = 10;
+  if ( volume2 > 30) volume2 = 10;
 
   address = 110;
   EEPROM.get(address, mixMusic); // считываем из памяти флаг перемешивания песенок

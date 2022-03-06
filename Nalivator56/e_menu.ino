@@ -312,7 +312,7 @@ void num_folder(uint8_t subFolder) {
     lcd.setCursor(11, 0);
     lcd.print(folder, DEC);
     lcd.setCursor(11, 1);
-    if (tracks == -1) {
+    if (tracks < 1) {
       print_lcd(45); //  НЕТ
     } else {
       if ( subFolder != 0) print_lcd(4); // пробел 3
@@ -342,7 +342,7 @@ void menu_play(uint8_t subPlay) {
     lcd.setCursor(4, 0);
     lcd.print(folder2, DEC);
     lcd.setCursor(3, 1);
-    if (tracks2 == -1) {
+    if (tracks2 < 1 ) {
       print_lcd(45);// НЕТ
     } else {
       if (subPlay != 0) print_lcd(4);// пробел 3
@@ -373,7 +373,7 @@ void menu_play(uint8_t subPlay) {
       lcd.setCursor(7, 1);
       print_lcd(4);// пробел
     }
-    if (tracks2 != -1) {
+    if (tracks2 > 0) {
       lcd.setCursor(7, 1);
       lcd.print((MusicList[num2] + 1), DEC);
     }
