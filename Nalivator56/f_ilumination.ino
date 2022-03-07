@@ -118,7 +118,7 @@ void CvetoMuzik() {
 
   }
 
-  if (systemON && ledShowOn && !clearLed && !promivka && MenuFlag != 20 && TOWERtimer.isReady()) {
+  if (systemON && (ledShowOn == 1) && !clearLed && !promivka && MenuFlag != 20 && TOWERtimer.isReady()) {
     if (++count2 >= 7) count2 = 0;
     if (++count4 >= 21) count4 = 0;
     strip2.clear();

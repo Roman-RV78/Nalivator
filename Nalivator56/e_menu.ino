@@ -440,7 +440,7 @@ void menu_brigh(uint8_t subBrigh) {
   }
   if (subBrigh == 2 || subBrigh == 0) {
     lcd.setCursor(10, 1);
-    if (ledShowOn) print_lcd(54);// ВКЛ.
+    if (ledShowOn == 1) print_lcd(54);// ВКЛ.
     else print_lcd(55);// ВЫКЛ.
   }
 }

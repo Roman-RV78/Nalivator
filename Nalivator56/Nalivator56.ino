@@ -203,7 +203,7 @@ LEDdata leds2[NUMLEDS];  // буфер ленты типа LEDdata (размер
 microLED strip2(leds2, NUMLEDS, LED_PIN2);  // объект лента
 timerMinim TOWERtimer(20);
 bool mig = false;
-bool rainbow = true;
+bool rainbow = false;
 bool clearLed = false;
 #endif
 #ifdef BUTTON_TOWER
@@ -243,8 +243,8 @@ int8_t tracks = 0;
 int16_t tracks2 = 0;
 uint8_t  Menu = 0;
 uint8_t MenuFlag = 0; // Здесь храниться уровень меню.
-uint8_t  Drink = MIN_DRINK; //
-uint8_t  DrinkCount = 0; //счётчик налитых рюмок
+uint8_t Drink = MIN_DRINK; //
+uint8_t DrinkCount = 0; //счётчик налитых рюмок
 uint8_t folder;
 uint8_t oldFolder;
 uint8_t folder2 = 10;
@@ -260,10 +260,11 @@ uint8_t mixMusic = 0;
 uint8_t folTra = 1; //
 uint8_t oldNum = 1; //
 uint8_t barMan = 1;
+uint8_t ledShowOn;
 bool LEDchanged = false;
 bool pumping = false;
 bool promivka = false;
-bool ledShow = true;
+bool ledShow = false;
 bool moving = false;
 bool tost = false;
 bool returnMenu = false;
@@ -276,7 +277,6 @@ bool flag = false; // флаг что нужно показать меню на�
 bool player = false; //
 bool nextTrack = false;
 bool playOn = false; // флаг что плеер был включен
-bool ledShowOn = true;
 bool pause = false;
 bool noTost = false; // флаг отмены тоста при нажатии на кнопку энкодера или кнопку на башне
 bool playMush = false;

@@ -44,7 +44,7 @@ void flowTick() {
           oled_naliv();
           systemON = true;
 
-          if (ledShowOn) {
+          if (ledShowOn == 1) {
             if (ledShow) check = true;
 #ifdef LED_TOWER
             TOWERtimer.setInterval(50);
@@ -183,13 +183,13 @@ void flowRoutnie() {
               PAUSEtimer.setInterval(100);
               returnMenu = true;
             }
-            if (!player && volume != 0 && tracks > 0 ) {
+            if (!player && volume != 0 && !digitalRead(BUSY_PIN) ) {
               myMP3.stop();
               delay(100);
               myMP3.setVolume(volume);
             }
 
-            if (ledShowOn) {
+            if (ledShowOn == 1) {
               ledShow = true;
               LEDtimer.setInterval(TABLE_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER
@@ -214,7 +214,7 @@ void flowRoutnie() {
 
 
 #ifdef LED_TOWER
-            if (ledShowOn) {
+            if (ledShowOn == 1) {
               TOWERtimer.setInterval(50);
               mig = true;
               rainbow = false;
@@ -619,7 +619,7 @@ void button_tower () {
           systemON = true;
           flag = true;
           if (noDoliv >= 1) readySystem = false;
-          if (ledShowOn) {
+          if (ledShowOn == 1) {
             if (ledShow) check = true;
 #ifdef LED_TOWER
             TOWERtimer.setInterval(50);
@@ -679,7 +679,7 @@ void play_mushket() {
     if (countRand != 0) {
       playMush = true;
       if (volume != 0 ) {
-        if (ledShowOn) {
+        if (ledShowOn == 1) {
           ledShow = true;
           LEDtimer.setInterval(TABLE_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER
@@ -743,7 +743,7 @@ void play_mushket() {
       }
       playMush = false;
       randomGlass = 0;
-      if (ledShowOn) {
+      if (ledShowOn == 1) {
         if (ledShow) check = true;
         LEDtimer.setInterval(GLASS_RAINBOW_ILLUMINATION_TIMER);
 #ifdef LED_TOWER

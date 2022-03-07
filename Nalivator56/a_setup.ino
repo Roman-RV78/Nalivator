@@ -109,9 +109,17 @@ void setup() {
   EEPROM.get(address, mixMusic); // считываем из памяти флаг перемешивания песенок
   if ( mixMusic > 1) mixMusic = 1;
 
-  //address = 120;
-  //EEPROM.get(address, barMan); // считываем из памяти флаг режима бармен
-  //if ( barMan > 1) barMan = 1;
+  address = 120;
+  EEPROM.get(address, ledShowOn); // считываем из памяти флаг включения иллюминации стола
+  if ( ledShowOn > 1) ledShowOn = 1;
+  if ( ledShowOn == 1) {
+    ledShow = true;
+#ifdef LED_TOWER
+    rainbow = true;
+#endif
+  } else {
+    LEDtimer.setInterval(GLASS_RAINBOW_ILLUMINATION_TIMER);
+  }
 
   address = 130;
   EEPROM.get(address, noTostBarmen); // считываем из памяти флаг тостов в  бармене

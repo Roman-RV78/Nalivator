@@ -338,6 +338,9 @@ void encTick() {
 #ifdef MEMORY_ON
         address = 30;
         EEPROM.put(address, bright); // обновляем в памяти яркость led
+        delay(5);
+        address = 120;
+        EEPROM.put(address, ledShowOn); // обновляем в памяти включение иллюминации стола
 #endif
       } else if (MenuFlag == 16) { // выход из режима включения долива
         MenuFlag = 4;
@@ -437,7 +440,7 @@ void encTick() {
 #endif
         curPumping = -1; // снимаем выбор рюмки
         moving = false;
-        if (ledShowOn) {
+        if (ledShowOn == 1) {
           ledShow = false;
 #ifdef LED_TOWER
           clearLed = true;
@@ -468,7 +471,7 @@ void encTick() {
       } else if (tost ) { // если во время произношения тоста нажата кнопка, то отменяем воспроизведение
         if ( !digitalRead(BUSY_PIN)) {
           noTost = true;
-          if (ledShowOn) {
+          if (ledShowOn == 1) {
             ledShow = false;
             check = true;
 #ifdef LED_TOWER
@@ -492,7 +495,7 @@ void encTick() {
 #ifdef BUTTON_TOWER
           if ( stateBut) promivka = true;
 #endif
-          if (ledShowOn) {
+          if (ledShowOn == 1) {
             if (ledShow) check = true;
 #ifdef LED_TOWER
             TOWERtimer.setInterval(50);
@@ -644,7 +647,7 @@ void encTick() {
         if (++ManRum > 6) ManRum = 1;
         multi_naliv2();
       } else if (MenuFlag == 15 ) { // меню настройки яркости
-        ledShowOn = !ledShowOn;
+        if (++ledShowOn > 1) ledShowOn = 0;
         menu_brigh(2);
       } else if (MenuFlag == 31) { //меню настройки громкости
         if (volume != 0) {
