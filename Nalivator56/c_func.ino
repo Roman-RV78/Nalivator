@@ -702,7 +702,11 @@ void play_mushket() {
         print_lcd(75);//  КРУЧУ ВЕРЧУ
         lcd.setCursor(2, 1);
         print_lcd(76);//  НАЛИТЬ ХОЧУ
+#ifndef PLAYER_MH2024K_24SS
         delay(500);
+#else
+        delay(1000);
+#endif
       }
     } else {
       systemON = true;

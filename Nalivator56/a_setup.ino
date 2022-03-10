@@ -69,7 +69,6 @@ void setup() {
 
   address = 30;
   EEPROM.get(address, bright); // считываем из памяти яркость led
-  if ( bright < 0 || bright > 255) bright = 100;
 
   address = 40;
   EEPROM.get(address, speedSer); // считываем из памяти скорость сервы

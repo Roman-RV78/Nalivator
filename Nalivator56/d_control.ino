@@ -337,10 +337,10 @@ void encTick() {
 #endif
 #ifdef MEMORY_ON
         address = 30;
-        EEPROM.put(address, bright); // обновляем в памяти яркость led
+        EEPROM.update(address, bright); // обновляем в памяти яркость led
         delay(5);
         address = 120;
-        EEPROM.put(address, ledShowOn); // обновляем в памяти включение иллюминации стола
+        EEPROM.update(address, ledShowOn); // обновляем в памяти включение иллюминации стола
 #endif
       } else if (MenuFlag == 16) { // выход из режима включения долива
         MenuFlag = 4;

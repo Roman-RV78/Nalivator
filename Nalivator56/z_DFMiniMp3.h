@@ -92,7 +92,7 @@ bool validateChecksum(const DfMp3_Packet_WithCheckSum& in) {
 
 class Mp3ChipMH2024K16SS {
   public:
-    static const bool SendCheckSum = false;
+    //static const bool SendCheckSum = false;
 
     typedef DfMp3_Packet_WithoutCheckSum SendPacket;
     typedef DfMp3_Packet_WithCheckSum ReceptionPacket;
@@ -112,7 +112,7 @@ class Mp3ChipMH2024K16SS {
 
 class Mp3ChipOriginal {
   public:
-    static const bool SendCheckSum = true;
+    //static const bool SendCheckSum = true;
 
     typedef DfMp3_Packet_WithCheckSum SendPacket;
     typedef DfMp3_Packet_WithCheckSum ReceptionPacket;
@@ -159,7 +159,7 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
 
 
     // sd:/mp3/####track name
-    void playMp3FolderTrack(uint16_t track) {
+    void playMp3FolderTrack(uint8_t track) {
       sendPacket(0x12, track);
     }
 
@@ -199,7 +199,7 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
 
 
 
-    int16_t getFolderTrackCount(uint8_t folder) {
+    uint8_t getFolderTrackCount(uint8_t folder) {
       drainResponses();
 #ifdef SENDING_MULTIPLE_COMMANDS
       return sendAndListenForReply(0x4e, folder);
@@ -212,7 +212,11 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
 
 
   private:
+#ifndef PLAYER_MH2024K_24SS
     static const uint16_t c_msSendSpace = 50;
+#else
+    static const uint16_t c_msSendSpace = 1500;
+#endif
 
     T_SERIAL_METHOD& _serial;
     uint32_t _lastSend; // not initialized as agreed in issue #63
@@ -263,19 +267,15 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
 
       if (in.version != 0xFF || in.length != 0x06 || in.endCode != 0xef) return false;
 
-      if (!validateChecksum(in))return false;
+      if (!validateChecksum(in)) return false;
+
 
       *command = in.command;
       *argument = ((in.hiByteArgument << 8) | in.lowByteArgument);
-
       return true;
     }
 
-    //#ifdef SENDING_MULTIPLE_COMMANDS
-    int32_t listenForReply(uint8_t command) {
-      //#else
-      //uint16_t listenForReply(uint8_t command) {
-      //#endif
+    int16_t listenForReply(uint8_t command) {
       uint8_t replyCommand = 0;
       uint16_t replyArg = 0;
 
@@ -285,17 +285,19 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
           if (command != 0 && command == replyCommand) {
             return replyArg;
           } else {
-            if (replyCommand == 0x40 ) return -1;
+            if (replyCommand == 0x40 ) return 0;
           }
         } else {
           if (replyArg != 0) {
             if (_serial.available() == 0) {
 #ifdef SENDING_MULTIPLE_COMMANDS
-              return -2;
+              return -1;
 #else
               return 0;
 #endif
             }
+          } else {
+            return 0;
           }
         }
       } while (command != 0);
@@ -303,13 +305,14 @@ template <class T_SERIAL_METHOD, class T_CHIP_VARIANT = Mp3ChipOriginal> class D
       return 0;
     }
 #ifdef SENDING_MULTIPLE_COMMANDS
-    int32_t sendAndListenForReply(uint8_t command, uint16_t arg = 0) {
-      int32_t rep = -2;
-      for (int i = 0; i < 3 && rep == -2; i++) {
+    int16_t sendAndListenForReply(uint8_t command, uint16_t arg = 0) {
+      int16_t rep = -1;
+      for (uint8_t i = 0; i < 3 && rep == -1; i++) {
         sendPacket(command, arg);
         rep = listenForReply(command);
       }
-      return rep;
+      if (rep != -1) return rep;
+      else return 0;
     }
 #endif
 };

@@ -12,7 +12,11 @@ void Tost() {
         print_lcd(3);//  !!! ТОСТ !!!
         myMP3.playFolderTrack(folder, (TostList[num] + 1));
         if (++num >= tracks) num = 0;
+#ifndef PLAYER_MH2024K_24SS
         PAUSEtimer.setInterval(500);
+#else
+        PAUSEtimer.setInterval(1000);
+#endif
         PAUSEtimer.reset();
       }
       readyTost = true;
