@@ -389,6 +389,9 @@ void servo_move(uint8_t target) {
       moving = true;
       deadTime = false;
       prevServoTime = millis();
+#ifdef SERVO_DETACH_PIN_ON
+      if (MenuFlag != 41 ) servo.attach(SERVO_PIN, SERVO_MIN, SERVO_MAX);
+#endif
     }
   }
   if ( moving && !deadTime && millis() - prevServoTime >= speedSer) {
@@ -407,6 +410,9 @@ void servo_move(uint8_t target) {
   if (deadTime && millis() - prevServoTime >= POST_PAUSE) { // пауза после остановки сервы до включения помпы
     deadTime = false;
     moving = false;
+#ifdef SERVO_DETACH_PIN_ON
+    if (MenuFlag != 41 ) servo.detach();
+#endif
   }
 }
 

@@ -308,7 +308,6 @@ void encTick() {
         EEPROM.update(address, noTostBarmen); // обновляем в памяти тосты в режиме бармен
 #endif
       } else if (MenuFlag == 41) { //Выход из меню  калибровки  сервы в меню настроек сервы
-        MenuFlag = 40;
         count = -1;
         servoPos = 0;
         do {
@@ -318,6 +317,10 @@ void encTick() {
           servo_move(0);                                     // цель серво - 0
 #endif
         } while (moving);
+#ifdef SERVO_DETACH_PIN_ON
+        servo.detach();
+#endif
+        MenuFlag = 40;
         menu_servo();
 #ifdef MEMORY_ON
         address = 0;
@@ -624,6 +627,9 @@ void encTick() {
       } else if (MenuFlag == 40 && subMenu == 1 ) {  // вошли из меню сервы в настройку положения сервы над рюмками
         MenuFlag = 41;
         servo_calibr(0);
+#ifdef SERVO_DETACH_PIN_ON
+        servo.attach(SERVO_PIN, SERVO_MIN, SERVO_MAX);
+#endif
       } else if (MenuFlag == 40 && subMenu == 2 ) {  // вошли из меню сервы в настройку  скорости сервы
         MenuFlag = 42;
         servo_speed(0);

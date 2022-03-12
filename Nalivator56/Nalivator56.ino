@@ -39,6 +39,8 @@
 #define SERVO_MIN 544 // уменьшить если не доезжает до 0° (544 по умолчанию)
 #define SERVO_MAX 2400 // увеличить если не доезжает до 180° (2400 по умолчанию )
 
+//#define SERVO_DETACH_PIN_ON // отключение генерации сигнала на пине серво в простое наливатора 
+
 // цвет статусов налитых-пустых установленных рюмок, например здесь https://basicweb.ru/html/html_colors.php можно посмотреть и выставить понравившиеся
 #define COLOR_POURET_GLASS 0 , 255 , 0 // цвет налитой рюмки R G B , здесь зелёный
 #define COLOR_EMPTY_GLASS_1 255 , 0 , 0  // цвет пустой рюмки для первой помпы,  R G B , здесь красный
@@ -60,9 +62,9 @@
 
 
 //#define PLAYER_16_PIN  // раскомментировать для 16-пинового плеера
-#define PLAYER_SERIAL_TIMEOUT 200 //таймаут(мс) ожидания данных с сериал порта плеера, если не верно читает количество треков или глюки, пробуем увеличивать сразу до 2000 мс
+#define PLAYER_SERIAL_TIMEOUT 1500 //таймаут(мс) ожидания данных с сериал порта плеера, если не верно читает количество треков или глюки, пробуем увеличивать сразу до 2000 мс
 //#define SENDING_MULTIPLE_COMMANDS  // если раскомментированно то плееру посылается по три команды за раз, может избавить от глюков
-//#define PLAYER_MH2024K_24SS  // тормозной плеер, PLAYER_SERIAL_TIMEOUT увеличиваем до 1500, вводятся задержки для нормальной работы плеера, в работе наливатора будут некоторые затупы
+#define PLAYER_MH2024K_24SS  // тормозной плеер, PLAYER_SERIAL_TIMEOUT увеличиваем до 1500, вводятся задержки для нормальной работы плеера, в работе наливатора будут некоторые затупы
 
 // =========== ЛИБЫ ===========
 #include <EEPROM.h>
@@ -70,6 +72,7 @@
 #include "z_DFMiniMp3.h"
 #include "encUniversalMinim.h"
 #include <Adafruit_TiCoServo.h>
+Adafruit_TiCoServo servo;
 #include "timer2Minim.h"
 #include "menu2.h"
 #include "random.h"
@@ -213,7 +216,7 @@ bool stateBut = false;
 #endif
 encMinim enc(CLK, DT, SW, 0); // пин clk, пин dt, пин sw, направление (0/1)
 LCD_1602_RUS lcd(0x27, 16, 2); //Адрес дисплея обычно 0x27 или 0x3F, подключение экрана А4-SDA-зеленый, А5-SCL-желтый
-Adafruit_TiCoServo servo;
+//Adafruit_TiCoServo servo;
 
 
 

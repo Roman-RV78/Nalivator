@@ -185,6 +185,9 @@ void setup() {
 #endif
 #endif
   delay(2000);
+#ifdef SERVO_DETACH_PIN_ON
+  servo.detach();
+#endif
   oled_menu();
   mix();
 }
