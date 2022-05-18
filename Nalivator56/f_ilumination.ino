@@ -50,7 +50,7 @@ void CvetoMuzik() {
       if (shotStates[led] == EMPTY) strip.setLED(led, mRGB(COLOR_EMPTY_GLASS_1));                    // налитая рюмка, статус: готов
   #endif
       else if (shotStates[led] == READY) strip.setLED(led, mRGB(COLOR_POURET_GLASS));
-      else if (shotStates[led] == NO_GLASS) strip.setLED(led, mRGB(0, 0, 0));
+      else if (shotStates[led] == NO_GLASS) strip.setLED(led, mRGB(COLOR_EMPTY_SPACE));
 #else
   #ifdef TWO_PUMPS
       if (shotStates[led] == EMPTY) {
@@ -61,7 +61,7 @@ void CvetoMuzik() {
       if (shotStates[led] == EMPTY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_GLASS_1));                    // налитая рюмка, статус: готов
   #endif
       else if (shotStates[led] == READY) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_POURET_GLASS));
-      else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(0, 0, 0));
+      else if (shotStates[led] == NO_GLASS) strip.setLED(NUM_SHOTS - 1 - led, mRGB(COLOR_EMPTY_SPACE));
 #endif
     }
     LEDtimer.setInterval(GLASS_RAINBOW_ILLUMINATION_TIMER);

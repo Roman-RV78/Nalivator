@@ -67,9 +67,9 @@ void flowTick() {
         shotStates[i] = NO_GLASS;                    // статус - нет рюмки
         if (!ledShow) {
 #ifndef LED_CHANGE_DIRECTION
-          strip.setLED(i, mRGB(0, 0, 0));  // чёрный
+          strip.setLED(i, mRGB(COLOR_EMPTY_SPACE));  // чёрный или на выбор
 #else
-          strip.setLED(NUM_SHOTS - 1 - i, mRGB(0, 0, 0));  // чёрный
+          strip.setLED(NUM_SHOTS - 1 - i, mRGB(COLOR_EMPTY_SPACE));  // чёрный или на выбор
 #endif
           LEDchanged = true;
         }
